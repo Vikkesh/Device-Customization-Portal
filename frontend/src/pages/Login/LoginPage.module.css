@@ -1,0 +1,164 @@
+/* filepath: /root/Customization_Services/Device_Customization_Portal/frontend/src/pages/Login/LoginPage.module.css */
+
+/* Base styles (Desktop First) */
+.loginPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #4A00E0 0%, #E2231A 100%); /* Purple to Red gradient */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.loginFormContainer {
+  background-color: rgba(34, 34, 34, 0.9); /* Dark, slightly transparent background */
+  padding: 50px 60px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 500px; /* Desktop width */
+  text-align: center;
+  color: #FFFFFF;
+}
+
+.loginFormContainer h2 {
+  margin-bottom: 30px;
+  color: #E2231A; /* Lenovo Red */
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputGroup {
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+.inputGroup label {
+  display: block;
+  margin-bottom: 10px;
+  color: #F5F5F5; /* Light grey for labels */
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.inputGroup input {
+  width: 100%;
+  padding: 15px;
+  background-color: #333333; /* Darker input background */
+  border: 1px solid #555555; /* Medium grey border */
+  border-radius: 8px;
+  font-size: 16px;
+  color: #FFFFFF;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.inputGroup input::placeholder {
+  color: #AAAAAA;
+}
+
+.inputGroup input:focus {
+  border-color: #E2231A; /* Lenovo Red border on focus */
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(226, 35, 26, 0.3);
+}
+
+.submitButton { /* Changed from loginButton to submitButton for consistency */
+  background: #E2231A; /* Lenovo Red */
+  color: white;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.submitButton:hover {
+  background-color: #C0150C; /* Darker Red */
+  transform: translateY(-2px);
+}
+
+.submitButton:active {
+  transform: translateY(0);
+}
+
+.registerPrompt { /* Adjusted for consistency */
+  margin-top: 30px;
+  font-size: 15px;
+  color: #DDDDDD;
+}
+
+.registerPrompt a {
+  color: #E2231A; /* Lenovo Red for links */
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.registerPrompt a:hover {
+  color: #C0150C; /* Darker Red on hover */
+  text-decoration: underline;
+}
+
+.errorMessage {
+  color: #FF6B6B; /* A brighter red for errors */
+  background-color: rgba(255, 107, 107, 0.1);
+  border: 1px solid #FF6B6B;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 20px; /* Space below error message if it appears above form elements */
+  margin-top: -10px; /* Pull it closer to the element above if it's between fields and button */
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Styles for smaller screens (e.g., mobile) */
+@media (max-width: 767px) {
+  .loginFormContainer {
+    padding: 30px 25px;
+    max-width: 90%;
+    margin: 20px auto;
+  }
+
+  .loginFormContainer h2 {
+    font-size: 26px;
+    margin-bottom: 25px;
+  }
+
+  .inputGroup {
+    margin-bottom: 20px;
+  }
+
+  .inputGroup label {
+    font-size: 15px;
+    margin-bottom: 8px;
+  }
+
+  .inputGroup input {
+    padding: 12px;
+    font-size: 15px;
+  }
+
+  .submitButton {
+    padding: 12px;
+    font-size: 16px;
+  }
+
+  .registerPrompt {
+    font-size: 14px;
+    margin-top: 25px;
+  }
+}

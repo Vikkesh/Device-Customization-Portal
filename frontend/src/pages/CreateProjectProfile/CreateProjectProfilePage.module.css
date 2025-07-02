@@ -1,0 +1,55 @@
+.createProjectProfilePage {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background:  rgb(47, 46, 45);
+  padding: 40px 0;
+  color: var(--color-white);
+}
+ .outerContainer{
+  background-color: var(--color-bg-darker-transparent);
+  position: fixed;
+  right: 20%;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  min-width: 300px;
+  border: 1px solid var(--color-white);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+ }
+
+@media (max-width: 768px) {
+  .outerContainer {
+    position: relative;
+    right: auto;
+    top: auto;
+    transform: none;
+    max-width: 100%;
+    margin: 20px;
+  }
+}
+
+.createProjectProfilePage h2 {
+  color: var(--color-red);
+  margin-bottom: 30px;
+  font-size: 2.2rem;
+  font-weight: 600;
+}
+
+.createProjectProfilePage p {
+  font-size: 1.1rem;
+  color: var(--color-grey-light);
+}
+
+@media (max-width: 600px) {
+  .createProjectProfilePage {
+    padding: 20px 0;
+  }
+  .createProjectProfilePage h2 {
+    font-size: 1.4rem;
+  }
+}

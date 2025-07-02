@@ -1,0 +1,69 @@
+.searchForm {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px; /* Add some space below the search bar */
+  max-width: 500px; /* Limit width for better aesthetics on larger screens */
+  width: 100%; /* Ensure it takes available width up to max-width */
+}
+
+.searchInput {
+  flex-grow: 1;
+  padding: 0.6em 1em;
+  font-size: 1em;
+  border: 1px solid #444; /* Slightly lighter border than buttons for differentiation */
+  border-radius: 8px 0 0 8px; /* Rounded corners on the left side */
+  background-color: #2a2a2a; /* Darker input background */
+  color: rgba(255, 255, 255, 0.87);
+  outline: none; /* Remove default focus outline */
+  transition: border-color 0.25s;
+}
+
+.searchInput:focus {
+  border-color: #646cff; /* Highlight color on focus, matching button hover */
+}
+
+.searchButton {
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a; /* Matches global button style */
+  color: rgba(255, 255, 255, 0.87);
+  border: 1px solid transparent; /* Matches global button style */
+  border-left: none; /* Remove left border to blend with input field */
+  border-radius: 0 8px 8px 0; /* Rounded corners on the right side */
+  cursor: pointer;
+  transition: border-color 0.25s, background-color 0.25s;
+}
+
+.searchButton:hover {
+  border-color: #646cff; /* Matches global button style */
+  background-color: #2c2c2c; /* Slightly lighter on hover */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .searchForm {
+    flex-direction: column;
+    align-items: stretch; /* Make input and button full width */
+  }
+
+  .searchInput {
+    border-radius: 8px; /* Full rounded corners when stacked */
+    margin-bottom: 10px; /* Space between input and button when stacked */
+    text-align: center;
+  }
+
+  .searchButton {
+    border-radius: 8px; /* Full rounded corners when stacked */
+    border-left: 1px solid transparent; /* Restore border for stacked view */
+  }
+}
+
+@media (max-width: 480px) {
+  .searchInput,
+  .searchButton {
+    font-size: 0.9em; /* Slightly smaller font on very small screens */
+    padding: 0.5em 1em;
+  }
+}

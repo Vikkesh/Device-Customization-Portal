@@ -1,0 +1,158 @@
+.appNav {
+  background-color: #333;
+  padding: 10px 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between; /* Distributes space between logo/home and auth links/logout */
+  align-items: center;
+  box-sizing: border-box; /* Ensures padding doesn't add to width */
+  position: fixed; /* Makes navbar fixed at the top */
+  top: 0;
+  left: 0;
+  z-index: 1000; /* Ensures navbar stays on top of other content */
+}
+
+.navLink {
+  color: white;
+  text-decoration: none;
+  margin: 0 10px;
+  padding: 8px 15px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.navLink:hover {
+  background-color: #555;
+}
+
+.registerLink {
+  margin-right: 0;
+  /* Specific styles for register link if needed, e.g., a different background or border */
+  /* background-color: #4CAF50; */ /* Example: Green background */
+}
+
+.homePage {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Adjust if navbar height changes */
+}
+/* Styles for the welcome message and dashboard text */
+
+
+.homePage p {
+   margin-top: 80px; /* Adjusted to account for fixed navbar height */
+  color:white;
+}
+
+/* New styles for Project Management Section */
+.projectManagementSection {
+  width: 90%;
+  max-width: 1200px; /* Max width for the section */
+  margin-top: 30px;
+  padding: 20px;
+  background-color: rgba(51, 51, 51, 0.8); /* Darker background, similar to login form inputs */
+  border-radius: 8px;
+  color: #FFFFFF; /* White text for this section */
+}
+
+.controlsContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.createProjectButton {
+  background: #E2231A; /* Lenovo Red - from LoginPage.module.css */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.createProjectButton:hover {
+  background-color: #C0150C; /* Darker Red - from LoginPage.module.css */
+  transform: translateY(-2px);
+}
+
+.projectsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.projectsTable th,
+.projectsTable td {
+  border: 1px solid #555555; /* Medium grey border - from LoginPage.module.css input */
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.projectsTable th {
+  background-color: #E2231A; /* Lenovo Red for table headers */
+  color: white;
+  font-weight: 600;
+}
+
+.projectsTable tbody tr:nth-child(even) {
+  background-color: rgba(68, 68, 68, 0.5); /* Slightly lighter dark for even rows */
+}
+
+.projectsTable tbody tr:hover {
+  background-color: rgba(85, 85, 85, 0.7); /* #555 with opacity */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+ 
+
+  .navLink,
+  .logoutButton {
+    margin: 5px 0;
+   
+  }
+
+  .homePage {
+    padding-top: 120px; /* Adjust based on expanded navbar height on mobile */
+  }
+
+  .controlsContainer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .createProjectButton {
+    width: 100%;
+    margin-top: 10px; /* Add space between search and button when stacked */
+  }
+
+  .projectManagementSection {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .projectsTable th,
+  .projectsTable td {
+    padding: 8px 10px;
+    font-size: 14px; /* Smaller font for table content on mobile */
+  }
+}
+
+.logoutButton {
+  padding: 10px 20px;
+  background-color: #f44336; /* Red color for logout */
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: inherit; /* Inherits font size from navLink */
+}
+
+.logoutButton:hover {
+  background-color: #d32f2f; /* Darker red on hover */
+}
+
+

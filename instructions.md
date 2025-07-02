@@ -1,0 +1,1 @@
+1. While making css files, always make sure to make relevant smaller screens css as well, like for mobile screens everytime.

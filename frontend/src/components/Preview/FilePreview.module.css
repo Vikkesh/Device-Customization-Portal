@@ -1,0 +1,327 @@
+.previewWrapper {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  background-color: rgba(51, 51, 51, 0.8);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.previewWrapper:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(226, 35, 26, 0.3);
+  border-color: var(--color-red);
+}
+
+.preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.audioPreview,
+.textPreview {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-purple), var(--color-red));
+  color: var(--color-white);
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.audioIcon,
+.textIcon {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.fileName {
+  font-size: 0.9rem;
+  font-weight: 500;
+  word-break: break-word;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.clickOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.previewWrapper:hover .clickOverlay {
+  opacity: 1;
+}
+
+.clickText {
+  color: var(--color-white);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+  padding: 8px 12px;
+  background: rgba(226, 35, 26, 0.8);
+  border-radius: 4px;
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modalContent {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  background: rgba(34, 34, 34, 0.95);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--color-border);
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: rgba(51, 51, 51, 0.8);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.closeButton {
+  background: var(--color-red);
+  color: var(--color-white);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.closeButton:hover {
+  background: var(--color-red-dark);
+}
+
+.newTabButton {
+  background: var(--color-purple);
+  color: var(--color-white);
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.newTabButton:hover {
+  background: #3A00B8;
+}
+
+.modalBody {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  padding: 20px;
+}
+
+.fullSizePreview {
+  max-width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.fullSizeAudio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 40px;
+  background: linear-gradient(135deg, var(--color-purple), var(--color-red));
+  border-radius: 12px;
+  min-width: 400px;
+}
+
+.audioPlayer {
+  width: 100%;
+  max-width: 350px;
+}
+
+.audioInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  color: var(--color-white);
+  text-align: center;
+}
+
+.audioIconLarge {
+  font-size: 4rem;
+}
+
+.fileNameLarge {
+  font-size: 1.2rem;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .previewWrapper {
+    width: 150px;
+    height: 150px;
+  }
+
+  .audioIcon,
+  .textIcon {
+    font-size: 2rem;
+  }
+
+  .fileName {
+    font-size: 0.8rem;
+  }
+
+  .clickText {
+    font-size: 0.8rem;
+    padding: 6px 10px;
+  }
+
+  .modal {
+    padding: 10px;
+  }
+
+  .modalContent {
+    max-width: 95vw;
+    max-height: 95vh;
+  }
+
+  .modalHeader {
+    padding: 10px 15px;
+  }
+
+  .closeButton {
+    width: 35px;
+    height: 35px;
+    font-size: 1.2rem;
+  }
+
+  .newTabButton {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+
+  .modalBody {
+    padding: 15px;
+    min-height: 250px;
+  }
+
+  .fullSizePreview {
+    max-height: 60vh;
+  }
+
+  .fullSizeAudio {
+    min-width: 300px;
+    padding: 30px 20px;
+  }
+
+  .audioIconLarge {
+    font-size: 3rem;
+  }
+
+  .fileNameLarge {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .previewWrapper {
+    width: 120px;
+    height: 120px;
+  }
+
+  .audioIcon,
+  .textIcon {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+  }
+
+  .fileName {
+    font-size: 0.7rem;
+  }
+
+  .clickText {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+  }
+
+  .modalHeader {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  .closeButton {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+    align-self: flex-end;
+  }
+
+  .newTabButton {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .fullSizeAudio {
+    min-width: 250px;
+    padding: 20px 15px;
+  }
+
+  .audioIconLarge {
+    font-size: 2.5rem;
+  }
+
+  .fileNameLarge {
+    font-size: 0.9rem;
+  }
+}
