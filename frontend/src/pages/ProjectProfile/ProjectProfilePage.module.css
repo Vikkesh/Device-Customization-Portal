@@ -180,14 +180,7 @@
   padding: 1rem;
 }
 
-.fileItem {
-  position: relative;
-  background: var(--color-bg-dark);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  padding: 0.5rem;
-  transition: all 0.3s ease;
-}
+
 
 .inputItem {
   position: relative;
@@ -205,7 +198,11 @@
   margin-bottom: 0.5rem;
 }
 
-.fileItem:hover,
+.fileItem{
+position: relative;
+}
+
+
 .inputItem:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
   transform: translateY(-2px);
@@ -219,7 +216,6 @@
   background: var(--color-red);
   color: var(--color-white);
   border: none;
-  border-radius: 50%;
   width: 24px;
   height: 24px;
   cursor: pointer;
@@ -230,6 +226,14 @@
   justify-content: center;
   transition: all 0.3s ease;
   z-index: 10;
+}
+
+.fileItem .removeButton {
+  visibility: hidden;
+}
+
+.fileItem:hover .removeButton {
+  visibility: visible;
 }
 
 .removeButton:hover {

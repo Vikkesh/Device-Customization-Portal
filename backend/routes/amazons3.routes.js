@@ -27,16 +27,32 @@ const upload = multer({
     fileSize: 100 * 1024 * 1024, // 100MB limit
   },
   fileFilter: (req, file, cb) => {
-    const allowedTypes = /jpeg|jpg|png|gif|mp4|mov|avi|mp3|wav|txt|md|csv/;
-    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = allowedTypes.test(file.mimetype);
-    
-    if (extname && mimetype) {
-      return cb(null, true);
-    } else {
-      cb(new Error('Invalid file type'));
-    }
+  // Updated to include more audio and video formats
+  const allowedExtensions = /jpeg|jpg|png|gif|bmp|webp|mp4|mov|avi|mkv|wmv|flv|webm|m4v|3gp|mp3|wav|aac|ogg|flac|wma|m4a|opus|txt|md|csv|pdf|doc|docx/;
+  const allowedMimeTypes = /^(image\/(jpeg|jpg|png|gif|bmp|webp)|video\/(mp4|quicktime|x-msvideo|x-ms-wmv|x-flv|webm|3gpp)|audio\/(mpeg|wav|aac|ogg|flac|x-ms-wma|mp4|opus)|text\/(plain|markdown|csv)|application\/(pdf|msword|vnd\.openxmlformats-officedocument\.wordprocessingml\.document))$/;
+  
+  const extname = allowedExtensions.test(path.extname(file.originalname).toLowerCase());
+  const mimetype = allowedMimeTypes.test(file.mimetype);
+  
+  console.log('File validation:', {
+    filename: file.originalname,
+    mimetype: file.mimetype,
+    extension: path.extname(file.originalname).toLowerCase(),
+    extensionValid: extname,
+    mimetypeValid: mimetype
+  });
+  
+  if (extname && mimetype) {
+    return cb(null, true);
+  } else {
+    console.error('File type validation failed:', {
+      filename: file.originalname,
+      mimetype: file.mimetype,
+      extension: path.extname(file.originalname).toLowerCase()
+    });
+    cb(new Error(`Invalid file type. File: ${file.originalname}, MIME: ${file.mimetype}`));
   }
+}
 });
 
 // POST endpoint - Upload files to S3 and save to project_preview table

@@ -189,7 +189,7 @@ const ProjectProfilePage = () => {
                   <FilePreview 
                     url={file.url} 
                     type={file.filetype} 
-                    fileName={file.filename || 'Unknown File'}
+                    fileName={file.filename}
                   />
                   <button 
                     className={styles.removeButton}
