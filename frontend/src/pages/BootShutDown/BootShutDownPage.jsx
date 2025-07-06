@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import styles from './BootShutDownPage.module.css';
 import FilePreview from '../../components/Preview/FilePreview';
 
 export default function BootShutDownPage() {
+  const { project_id } = useParams();
   const [bootAnimation, setBootAnimation] = useState(null);
   const [bootSound, setBootSound] = useState(null);
   const [shutdownAnimation, setShutdownAnimation] = useState(null);
@@ -38,31 +41,41 @@ export default function BootShutDownPage() {
   };
 
   const handleSubmit = async (data, type, field) => {
+    if (!data) {
+      alert(`Please select a file for ${field}`);
+      return;
+    }
+
     const formData = new FormData();
 
     if (['image', 'audio', 'video', 'text'].includes(type)) {
       formData.append('files', data);
+      formData.append('project_id', project_id);
       formData.append('type', type);
       formData.append('field', field);
-    } else if (type === 'text-input') {
-      formData.append('type', type);
-      formData.append('field', field);
-      formData.append('value', data);
+    } else {
+      // This page does not have text inputs, but keeping for consistency
+      console.error("Unsupported data type for submission:", type);
+      return;
     }
 
     try {
-      // Placeholder API call
-      const res = await fetch('http://localhost:5000/api/boot-shutdown', {
-        method: 'POST',
-        body: formData,
+      const response = await axios.post('http://localhost:8080/api/s3/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
 
-      const result = await res.json();
-      console.log(`${field} upload result:`, result);
-      alert(`${field} uploaded successfully!`);
+      console.log(`${field} upload result:`, response.data);
+      if (response.data.success) {
+        alert(`${field} uploaded successfully!`);
+      } else {
+        alert(`Error uploading ${field}: ${response.data.message}`);
+      }
     } catch (err) {
       console.error(`Error uploading ${field}:`, err);
-      alert(`Error uploading ${field}`);
+      const errorMessage = err.response?.data?.message || err.message || 'Unknown error';
+      alert(`Error uploading ${field}: ${errorMessage}`);
     }
   };
 

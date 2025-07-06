@@ -29,25 +29,3 @@
   .personalInfoButton:hover {
     background-color: var(--color-red-dark);
   }
-  .appNav {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background-color: #333;
-    color: white;
-  }
-  
-  .navLink {
-    color: white;
-    text-decoration: none;
-    margin: 0 1rem;
-    padding: 0.5rem;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-  }
-  
-  .navLink:hover {
-    background-color: #555;
-  }

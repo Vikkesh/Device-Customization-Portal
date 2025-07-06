@@ -37,7 +37,6 @@ router.get('/project/:project_id', async (req, res) => {
       params.push(field);
     }
 
-    query += ' ORDER BY created_at DESC';
 
     const [inputs] = await db.query(query, params);
 

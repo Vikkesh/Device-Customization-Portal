@@ -38,29 +38,55 @@ router.get('/project/:project_id', async (req, res) => {
       params.push(field);
     }
 
-    query += ' ORDER BY created_at DESC';
+    // Use the S3 files endpoint to get files with fresh pre-signed URLs
+    try {
+      const s3Response = await axios.get(`${process.env.BASE_URL || 'http://localhost:8080'}/api/s3/files/${project_id}${field ? `?field=${field}` : ''}`);
+      
+      if (s3Response.data.success) {
+        res.status(200).json({
+          success: true,
+          message: `Found ${s3Response.data.files.length} file(s)`,
+          project_id,
+          field: field || 'all',
+          files: s3Response.data.files,
+          count: s3Response.data.files.length
+        });
+      } else {
+        res.status(404).json({
+          success: false,
+          message: 'No files found',
+          project_id,
+          field: field || 'all',
+          files: [],
+          count: 0
+        });
+      }
+    } catch (s3Error) {
+      console.error('S3 files endpoint error:', s3Error.response?.data || s3Error.message);
+      
+      // Fallback to database query if S3 endpoint fails
+      const [files] = await db.query(query, params);
 
-    const [files] = await db.query(query, params);
+      if (files.length === 0) {
+        return res.status(200).json({
+          success: true,
+          message: field ? `No files found for field '${field}' in project ${project_id}` : `No files found for project ${project_id}`,
+          project_id,
+          field: field || 'all',
+          files: [],
+          count: 0
+        });
+      }
 
-    if (files.length === 0) {
-      return res.status(200).json({
+      res.status(200).json({
         success: true,
-        message: field ? `No files found for field '${field}' in project ${project_id}` : `No files found for project ${project_id}`,
+        message: `Found ${files.length} file(s) (using fallback)`,
         project_id,
         field: field || 'all',
-        files: [],
-        count: 0
+        files,
+        count: files.length
       });
     }
-
-    res.status(200).json({
-      success: true,
-      message: `Found ${files.length} file(s)`,
-      project_id,
-      field: field || 'all',
-      files,
-      count: files.length
-    });
 
   } catch (error) {
     console.error('Retrieve project preview error:', error);
@@ -99,13 +125,13 @@ router.delete('/project/:project_id', async (req, res) => {
       });
     }
 
-    // Extract URLs for S3 deletion
-    const urls = projectFiles.map(file => file.url);
+    // Extract S3 keys for deletion (stored in url column)
+    const s3_keys = projectFiles.map(file => file.url);
 
     // Call S3 delete endpoint
     try {
       const s3Response = await axios.delete(`${process.env.BASE_URL || 'http://localhost:8080'}/api/s3/delete`, {
-        data: { urls }
+        data: { s3_keys }
       });
 
       console.log('S3 deletion response:', s3Response.data);
@@ -166,13 +192,13 @@ router.delete('/project/:project_id/field/:field', async (req, res) => {
       });
     }
 
-    // Extract URLs for S3 deletion
-    const urls = fieldFiles.map(file => file.url);
+    // Extract S3 keys for deletion (stored in url column)
+    const s3_keys = fieldFiles.map(file => file.url);
 
     // Call S3 delete endpoint
     try {
       const s3Response = await axios.delete(`${process.env.BASE_URL || 'http://localhost:8080'}/api/s3/delete`, {
-        data: { urls }
+        data: { s3_keys }
       });
 
       console.log('S3 deletion response:', s3Response.data);
@@ -206,21 +232,21 @@ router.delete('/project/:project_id/field/:field', async (req, res) => {
   }
 });
 
-// DELETE endpoint - Delete a specific file by URL
+// DELETE endpoint - Delete a specific file by S3 key
 router.delete('/file', async (req, res) => {
   try {
-    const { url, project_id, field } = req.body;
+    const { s3_key, project_id, field } = req.body;
 
-    if (!url) {
+    if (!s3_key) {
       return res.status(400).json({
         success: false,
-        message: 'File URL is required'
+        message: 'S3 key is required'
       });
     }
 
-    // Check if file exists in database
+    // Check if file exists in database using S3 key
     let query = 'SELECT id, project_id, field FROM project_preview WHERE url = ?';
-    const params = [url];
+    const params = [s3_key];
 
     if (project_id) {
       query += ' AND project_id = ?';
@@ -243,10 +269,10 @@ router.delete('/file', async (req, res) => {
 
     const fileData = fileCheck[0];
 
-    // Call S3 delete endpoint
+    // Call S3 delete endpoint with S3 key
     try {
       const s3Response = await axios.delete(`${process.env.BASE_URL || 'http://localhost:8080'}/api/s3/delete`, {
-        data: { urls: [url] }
+        data: { s3_keys: [s3_key] } // Always send as array
       });
 
       console.log('S3 deletion response:', s3Response.data);
@@ -258,14 +284,14 @@ router.delete('/file', async (req, res) => {
     // Delete from database
     const [deleteResult] = await db.query(
       'DELETE FROM project_preview WHERE url = ?',
-      [url]
+      [s3_key]
     );
 
     res.status(200).json({
       success: true,
       message: 'File deleted successfully',
       deleted_file: {
-        url,
+        s3_key,
         project_id: fileData.project_id,
         field: fileData.field
       },

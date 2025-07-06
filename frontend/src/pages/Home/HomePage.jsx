@@ -9,12 +9,6 @@ const HomePage = () => {
   const user = JSON.parse(localStorage.getItem('user'));
   const [projects, setProjects] = useState([]);
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    navigate('/login');
-  };
-
   const handleCreateProject = () => {
     navigate('/createproject');
   };
@@ -37,24 +31,9 @@ const HomePage = () => {
 
   return (
     <div className={styles.homePage}>
-      <nav className={styles.appNav}>
-        <Link to="/" className={styles.navLink}>Home</Link>
-        {localStorage.getItem('token') ? (
-          <div className={styles.navLinkRight}>
-          <Link to="/dashboard" className={styles.navLink}>Dashboard</Link>
-          <button onClick={handleLogout} className={`${styles.logoutButton} ${styles.navLink}`}>
-            Logout
-          </button>
-          </div>
-        ) : (
-          <>
-            <Link to="/login" className={styles.navLink}>Login</Link>
-            <Link to="/register" className={`${styles.navLink} ${styles.registerLink}`}>Register</Link>
-          </>
-        )}
-      </nav>
-      <p> Welcome, {user?.username || 'User'}! This is your project dashboard.</p>
-      <div className={styles.projectManagementSection}>
+      <div className={styles.pageContent}>
+        <p> Welcome, {user?.username || 'User'}! This is your project dashboard.</p>
+        <div className={styles.projectManagementSection}>
         <div className={styles.controlsContainer}>
           <SearchComponent />
         </div>
@@ -103,6 +82,7 @@ const HomePage = () => {
             )}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );

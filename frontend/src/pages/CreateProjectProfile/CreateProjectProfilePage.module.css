@@ -45,11 +45,95 @@
   color: var(--color-grey-light);
 }
 
+.navigationContainer {
+  background-color: var(--color-bg-darker-transparent);
+  position: fixed;
+  left: 20%;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  min-width: 300px;
+  border: 1px solid var(--color-white);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.linkContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.navLink {
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.navLink:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.linkCard {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: background-color 0.2s ease;
+}
+
+.linkCard:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.linkCard h3 {
+  color: var(--color-red);
+  margin: 0 0 8px 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.linkCard p {
+  margin: 0;
+  color: var(--color-grey-light);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .navigationContainer {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    max-width: 100%;
+    margin: 20px;
+  }
+  
+  .createProjectProfilePage {
+    align-items: stretch;
+    padding: 20px;
+  }
+  
+  .outerContainer {
+    margin-bottom: 20px;
+  }
+}
+
 @media (max-width: 600px) {
   .createProjectProfilePage {
     padding: 20px 0;
   }
   .createProjectProfilePage h2 {
     font-size: 1.4rem;
+  }
+  .linkCard h3 {
+    font-size: 1.1rem;
+  }
+  
+  .linkCard p {
+    font-size: 0.8rem;
   }
 }

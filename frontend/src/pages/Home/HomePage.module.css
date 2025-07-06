@@ -1,47 +1,21 @@
-.appNav {
-  background-color: #333;
-  padding: 10px 20px;
-  width: 100%;
-  display: flex;
-  justify-content: space-between; /* Distributes space between logo/home and auth links/logout */
-  align-items: center;
-  box-sizing: border-box; /* Ensures padding doesn't add to width */
-  position: fixed; /* Makes navbar fixed at the top */
-  top: 0;
-  left: 0;
-  z-index: 1000; /* Ensures navbar stays on top of other content */
-}
-
-.navLink {
-  color: white;
-  text-decoration: none;
-  margin: 0 10px;
-  padding: 8px 15px;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-
-.navLink:hover {
-  background-color: #555;
-}
-
-.registerLink {
-  margin-right: 0;
-  /* Specific styles for register link if needed, e.g., a different background or border */
-  /* background-color: #4CAF50; */ /* Example: Green background */
-}
-
 .homePage {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Adjust if navbar height changes */
+  align-items: center;
+  min-height: 100vh;
 }
+
+.pageContent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 /* Styles for the welcome message and dashboard text */
-
-
 .homePage p {
-   margin-top: 80px; /* Adjusted to account for fixed navbar height */
-  color:white;
+  color: white;
+  margin-top: 20px;
 }
 
 /* New styles for Project Management Section */
@@ -108,18 +82,6 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
- 
-
-  .navLink,
-  .logoutButton {
-    margin: 5px 0;
-   
-  }
-
-  .homePage {
-    padding-top: 120px; /* Adjust based on expanded navbar height on mobile */
-  }
-
   .controlsContainer {
     flex-direction: column;
     align-items: stretch;
@@ -140,19 +102,6 @@
     padding: 8px 10px;
     font-size: 14px; /* Smaller font for table content on mobile */
   }
-}
-
-.logoutButton {
-  padding: 10px 20px;
-  background-color: #f44336; /* Red color for logout */
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-size: inherit; /* Inherits font size from navLink */
-}
-
-.logoutButton:hover {
-  background-color: #d32f2f; /* Darker red on hover */
 }
 
 

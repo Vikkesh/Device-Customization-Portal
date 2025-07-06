@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import styles from './HomeThemePage.module.css';
 import FilePreview from '../../components/Preview/FilePreview';
 
 export default function HomeThemePage() {
+  const { project_id } = useParams();
   const [wallpaperHomescreen, setWallpaperHomescreen] = useState([]);
   const [wallpaperLockscreen, setWallpaperLockscreen] = useState([]);
   const [launcher, setLauncher] = useState('');
@@ -56,35 +59,59 @@ export default function HomeThemePage() {
   };
 
   const handleSubmit = async (data, type, field) => {
-    const formData = new FormData();
-
-    if (['image', 'audio', 'video', 'text'].includes(type)) {
-      if (Array.isArray(data)) {
-        data.forEach(file => formData.append('files', file));
-      } else {
-        formData.append('files', data);
-      }
-      formData.append('type', type);
-      formData.append('field', field);
-    } else if (type === 'text-input') {
-      formData.append('type', type);
-      formData.append('field', field);
-      formData.append('value', data);
+    // For file inputs, data can be an array or a single file. For text, it's a string.
+    if (!data || (Array.isArray(data) && data.length === 0)) {
+      alert(`Please provide input for ${field}`);
+      return;
     }
 
-    try {
-      // Placeholder API call
-      const res = await fetch('http://localhost:5000/api/home-theme', {
-        method: 'POST',
-        body: formData,
-      });
+    if (['image', 'audio', 'video', 'text'].includes(type)) {
+      const formData = new FormData();
+      const files = Array.isArray(data) ? data : [data];
+      
+      files.forEach(file => formData.append('files', file));
+      formData.append('project_id', project_id);
+      formData.append('type', type);
+      formData.append('field', field);
 
-      const result = await res.json();
-      console.log(`${field} upload result:`, result);
-      alert(`${field} uploaded successfully!`);
-    } catch (err) {
-      console.error(`Error uploading ${field}:`, err);
-      alert(`Error uploading ${field}`);
+      try {
+        const response = await axios.post('http://localhost:8080/api/s3/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        
+        console.log(`${field} upload result:`, response.data);
+        if (response.data.success) {
+          alert(`${field} uploaded successfully!`);
+        } else {
+          alert(`Error uploading ${field}: ${response.data.message}`);
+        }
+      } catch (err) {
+        console.error(`Error uploading ${field}:`, err);
+        const errorMessage = err.response?.data?.message || err.message || 'Unknown error';
+        alert(`Error uploading ${field}: ${errorMessage}`);
+      }
+
+    } else if (type === 'text-input') {
+      try {
+        const response = await axios.post('http://localhost:8080/api/inputs/add', {
+          project_id,
+          field,
+          value: data 
+        });
+        
+        console.log(`${field} submission result:`, response.data);
+        if (response.data.success) {
+          alert(`${field} submitted successfully!`);
+        } else {
+          alert(`Error submitting ${field}: ${response.data.message}`);
+        }
+      } catch (err) {
+        console.error(`Error submitting ${field}:`, err);
+        const errorMessage = err.response?.data?.message || err.message || 'Unknown error';
+        alert(`Error submitting ${field}: ${errorMessage}`);
+      }
     }
   };
 

@@ -4,7 +4,7 @@ when writing javasript, ensure to use modern ES6+ syntax
 Use axios for making api calls 
 When creating pages or componenets make sure to add a subfolder for the page or component in the `src` directory. For example, if creating a new page called `UserProfile`, create a folder `src/pages/UserProfile` and place all related files (like `UserProfile.js`, `UserProfile.css`, etc.) inside that folder.
 
-below is the boilerplate code or template for those pages that need to be treated as a form. Change variables and apis accordingly, for the entries i mention while giving the prompt to make form pages.
+below is the boilerplate code or template for those pages that are called as "form pages" or treasted as a form. Change variables and apis accordingly, for the entries i mention while giving the prompt to make form pages.
 import React, { useState } from 'react';
 
 export default function UploadForm() {
