@@ -61,6 +61,12 @@ const CreateProjectProfilePage = () => {
               <p>Configure boot animations and shutdown settings</p>
             </div>
           </Link>
+          <Link to={`/${project.project_id}/apps`} className={styles.navLink}>
+            <div className={styles.linkCard}>
+              <h3>Preload Apps</h3>
+              <p>Configure apps to be preloaded on the device</p>
+            </div>
+          </Link>
     
         </div>
       </div>

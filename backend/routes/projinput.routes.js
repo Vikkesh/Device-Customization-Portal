@@ -95,30 +95,16 @@ router.post('/add', async (req, res) => {
       });
     }
 
-    // Check if field already exists for this project (optional: update vs create new)
-    const [existingInput] = await db.query(
-      'SELECT id FROM project_inputs WHERE project_id = ? AND field = ?',
-      [project_id, field]
-    );
-
+  
     let result;
     let operation;
 
-    if (existingInput.length > 0) {
-      // Update existing input
-      [result] = await db.query(
-        'UPDATE project_inputs SET value = ? WHERE project_id = ? AND field = ?',
-        [value, project_id, field]
-      );
-      operation = 'updated';
-    } else {
-      // Create new input
+  
       [result] = await db.query(
         'INSERT INTO project_inputs (project_id, field, value) VALUES (?, ?, ?)',
         [project_id, field, value]
       );
       operation = 'created';
-    }
 
     res.status(200).json({
       success: true,

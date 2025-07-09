@@ -10,6 +10,7 @@ import DashboardPage from './pages/Dashboard/DashboardPage';
 import PersonalInfoPage from './pages/PersonalInfo/PersonalInfoPage';
 import HomeThemePage from './pages/HomeTheme/HomeThemePage';
 import BootShutDownPage from './pages/BootShutDown/BootShutDownPage';
+import AppsPage from './pages/Apps/AppsPage';
 import Header from './components/Header/Header';
 import './App.css';
 
@@ -33,6 +34,7 @@ function AppContent() {
           <Route path="/personalinfo" element={<PersonalInfoPage />} />
           <Route path="/:project_id/hometheme" element={<HomeThemePage />} />
           <Route path="/:project_id/bootshutdown" element={<BootShutDownPage />} />
+          <Route path="/:project_id/apps" element={<AppsPage />} />
           {/* Add other routes here */}
         </Routes>
       </div>
