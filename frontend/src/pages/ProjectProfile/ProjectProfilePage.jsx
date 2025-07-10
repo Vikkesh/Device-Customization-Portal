@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import FilePreview from '../../components/Preview/FilePreview';
@@ -12,6 +12,38 @@ const ProjectProfilePage = () => {
   const [inputFiles, setInputFiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // System settings state
+  const [systemSettings, setSystemSettings] = useState({
+    timeZone: { enabled: false, value: 'IST' },
+    timeFormat: { enabled: false, value: '24-hour' },
+    screenTimeout: { enabled: false, value: '30-minutes' },
+    language: { enabled: false, value: 'English' },
+    fontSize: { enabled: false, value: 'Medium' },
+    userDebugMode: { enabled: false, value: 'Disabled' }
+  });
+
+  const [advancedSettings, setAdvancedSettings] = useState({
+    bootLoader: { enabled: false, value: 'Standard' },
+    kernelMode: { enabled: false, value: 'Normal' },
+    memoryManagement: { enabled: false, value: 'Auto' }
+  });
+
+  // System settings options
+  const systemSettingsOptions = {
+    timeZone: ['IST', 'EST', 'UTC'],
+    timeFormat: ['24-hour', '12-hour', 'Auto'],
+    screenTimeout: ['15-minutes', '30-minutes', '1-hour'],
+    language: ['English', 'Spanish', 'French'],
+    fontSize: ['Small', 'Medium', 'Large'],
+    userDebugMode: ['Disabled', 'Enabled', 'Developer']
+  };
+
+  const advancedSettingsOptions = {
+    bootLoader: ['Standard', 'Fast', 'Secure'],
+    kernelMode: ['Normal', 'Debug', 'Performance'],
+    memoryManagement: ['Auto', 'Conservative', 'Aggressive']
+  };
 
    if (!localStorage.getItem('token')) {
      navigate('/login');
@@ -207,6 +239,168 @@ const ProjectProfilePage = () => {
     );
   };
 
+  // Handle system settings checkbox change
+  const handleSystemSettingToggle = (setting, isAdvanced = false) => {
+    if (isAdvanced) {
+      setAdvancedSettings(prev => ({
+        ...prev,
+        [setting]: {
+          ...prev[setting],
+          enabled: !prev[setting].enabled
+        }
+      }));
+    } else {
+      setSystemSettings(prev => ({
+        ...prev,
+        [setting]: {
+          ...prev[setting],
+          enabled: !prev[setting].enabled
+        }
+      }));
+    }
+  };
+
+  // Handle system settings value change
+  const handleSystemSettingValueChange = (setting, value, isAdvanced = false) => {
+    if (isAdvanced) {
+      setAdvancedSettings(prev => ({
+        ...prev,
+        [setting]: {
+          ...prev[setting],
+          value: value
+        }
+      }));
+    } else {
+      setSystemSettings(prev => ({
+        ...prev,
+        [setting]: {
+          ...prev[setting],
+          value: value
+        }
+      }));
+    }
+  };
+
+  // Submit system settings
+  const submitSystemSettings = async (isAdvanced = false) => {
+    const settings = isAdvanced ? advancedSettings : systemSettings;
+    const settingsType = isAdvanced ? 'Advanced System Settings' : 'System Settings';
+    
+    // Prepare inputs array for enabled settings only
+    const inputs = Object.entries(settings)
+      .filter(([, settingData]) => settingData.enabled)
+      .map(([field, settingData]) => ({
+        field: field,
+        value: settingData.value
+      }));
+
+    if (inputs.length === 0) {
+      alert(`No ${settingsType.toLowerCase()} selected to submit.`);
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:8080/api/inputs/add-multiple-settings', {
+        project_id: project_id,
+        inputs: inputs
+      });
+
+      if (response.data.success) {
+        alert(`${settingsType} submitted successfully!`);
+        
+        // Reset the submitted settings to unchecked state
+        if (isAdvanced) {
+          setAdvancedSettings(prev => {
+            const updated = { ...prev };
+            Object.keys(updated).forEach(key => {
+              if (updated[key].enabled) {
+                updated[key].enabled = false;
+              }
+            });
+            return updated;
+          });
+        } else {
+          setSystemSettings(prev => {
+            const updated = { ...prev };
+            Object.keys(updated).forEach(key => {
+              if (updated[key].enabled) {
+                updated[key].enabled = false;
+              }
+            });
+            return updated;
+          });
+        }
+        
+        // Refresh the input files data
+        await fetchInputFiles();
+      }
+    } catch (error) {
+      console.error(`Error submitting ${settingsType.toLowerCase()}:`, error);
+      alert(`Failed to submit ${settingsType.toLowerCase()}`);
+    }
+  };
+
+  // Render system settings section
+  const renderSystemSettingsSection = (title, settings, options, isAdvanced = false) => {
+    return (
+      <div className={styles.fileSection}>
+        <h3>{title}</h3>
+        <div className={styles.settingsGrid}>
+          {Object.entries(settings).map(([settingKey, settingData]) => (
+            <div key={settingKey} className={styles.settingItem}>
+              <div className={styles.settingHeader}>
+                <input
+                  type="checkbox"
+                  id={`${settingKey}-${isAdvanced ? 'advanced' : 'basic'}`}
+                  checked={settingData.enabled}
+                  onChange={() => handleSystemSettingToggle(settingKey, isAdvanced)}
+                  className={styles.settingCheckbox}
+                />
+                <label 
+                  htmlFor={`${settingKey}-${isAdvanced ? 'advanced' : 'basic'}`}
+                  className={styles.settingLabel}
+                >
+                  {settingKey.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                </label>
+              </div>
+              <select
+                value={settingData.value}
+                onChange={(e) => handleSystemSettingValueChange(settingKey, e.target.value, isAdvanced)}
+                disabled={!settingData.enabled}
+                className={`${styles.settingSelect} ${!settingData.enabled ? styles.disabled : ''}`}
+              >
+                {options[settingKey]?.map(option => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ))}
+        </div>
+        <button 
+          className={styles.submitSettingsButton}
+          onClick={() => submitSystemSettings(isAdvanced)}
+        >
+          Submit {title}
+        </button>
+      </div>
+    );
+  };
+
+  // Fetch input files function
+  const fetchInputFiles = useCallback(async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/inputs/project/${project_id}`);
+      if (response.data.success) {
+        setInputFiles(response.data.inputs || []);
+      }
+    } catch (error) {
+      console.error('Failed to fetch input files:', error);
+      setInputFiles([]);
+    }
+  }, [project_id]);
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -232,15 +426,7 @@ const ProjectProfilePage = () => {
       }
 
       // Fetch input files
-      try {
-        const response = await axios.get(`http://localhost:8080/api/inputs/project/${project_id}`);
-        if (response.data.success) {
-          setInputFiles(response.data.inputs || []);
-        }
-      } catch (error) {
-        console.error('Failed to fetch input files:', error);
-        setInputFiles([]);
-      }
+      await fetchInputFiles();
 
       setLoading(false);
     };
@@ -248,7 +434,7 @@ const ProjectProfilePage = () => {
     if (project_id) {
       fetchData();
     }
-  }, [project_id]);
+  }, [project_id, fetchInputFiles]);
 
   if (loading) {
     return (
@@ -274,9 +460,9 @@ const ProjectProfilePage = () => {
           <h1>Project Profile</h1>
           <button 
             className={styles.backButton}
-            onClick={() => navigate('/dashboard')}
+            onClick={() => navigate(`/project/${project_id}`)}
           >
-            Back to Dashboard
+            Back to customization
           </button>
         </div>
 
@@ -309,6 +495,12 @@ const ProjectProfilePage = () => {
 
         {/* Input Data Section */}
         {renderInputSection('Input Data', inputFiles)}
+
+        {/* System Settings Section */}
+        {renderSystemSettingsSection('System Settings', systemSettings, systemSettingsOptions)}
+
+        {/* Advanced System Settings Section */}
+        {renderSystemSettingsSection('Advanced System Settings', advancedSettings, advancedSettingsOptions, true)}
 
         {/* Delete All Data Button */}
         <div className={styles.dangerZone}>

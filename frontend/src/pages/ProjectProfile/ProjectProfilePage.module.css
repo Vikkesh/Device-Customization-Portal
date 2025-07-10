@@ -279,6 +279,99 @@ position: relative;
   transform: translateY(-2px);
 }
 
+/* System Settings Styles */
+.settingsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.settingItem {
+  background: var(--color-bg-dark);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+
+.settingItem:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  border-color: var(--color-purple);
+}
+
+.settingHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.settingCheckbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-purple);
+  cursor: pointer;
+}
+
+.settingLabel {
+  color: var(--color-white);
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.settingSelect {
+  width: 100%;
+  background: var(--color-bg-darker);
+  color: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.settingSelect:focus {
+  border-color: var(--color-purple);
+  box-shadow: 0 0 0 2px rgba(139, 69, 199, 0.2);
+}
+
+.settingSelect.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--color-bg-dark);
+}
+
+.settingSelect option {
+  background: var(--color-bg-darker);
+  color: var(--color-white);
+}
+
+.submitSettingsButton {
+  background: var(--color-purple);
+  color: var(--color-white);
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.submitSettingsButton:hover {
+  background: var(--color-red);
+  transform: translateY(-2px);
+}
+
+.submitSettingsButton:active {
+  transform: translateY(0);
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
   .projectProfilePage {
@@ -335,6 +428,30 @@ position: relative;
   .deleteAllButton {
     width: 100%;
   }
+
+  .settingsGrid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .settingItem {
+    padding: 0.75rem;
+  }
+
+  .settingHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .settingLabel {
+    font-size: 0.9rem;
+  }
+
+  .submitSettingsButton {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -350,5 +467,18 @@ position: relative;
 
   .fileGrid {
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+
+  .settingItem {
+    padding: 0.5rem;
+  }
+
+  .settingLabel {
+    font-size: 0.85rem;
+  }
+
+  .settingSelect {
+    font-size: 0.85rem;
+    padding: 0.4rem;
   }
 }
