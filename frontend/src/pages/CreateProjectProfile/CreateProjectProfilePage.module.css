@@ -10,7 +10,7 @@
 }
  .outerContainer{
   background-color: var(--color-bg-darker-transparent);
-  position: fixed;
+  position: absolute;
   right: 20%;
   top: 50%;
   transform: translateY(-50%);
@@ -21,17 +21,6 @@
   border: 1px solid var(--color-white);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
  }
-
-@media (max-width: 768px) {
-  .outerContainer {
-    position: relative;
-    right: auto;
-    top: auto;
-    transform: none;
-    max-width: 100%;
-    margin: 20px;
-  }
-}
 
 .createProjectProfilePage h2 {
   color: var(--color-red);
@@ -47,9 +36,9 @@
 
 .navigationContainer {
   background-color: var(--color-bg-darker-transparent);
-  position: fixed;
+  position: absolute;
   left: 20%;
-  top: 50%;
+  top: 60%;
   transform: translateY(-50%);
   padding: 20px;
   border-radius: 8px;
@@ -103,6 +92,16 @@
 }
 
 @media (max-width: 768px) {
+  .outerContainer {
+    position: relative;
+    right: auto;
+    top: auto;
+    transform: none;
+    max-width: 100%;
+    margin: 20px;
+    margin-bottom: 20px;
+  }
+  
   .navigationContainer {
     position: relative;
     left: auto;
@@ -115,10 +114,6 @@
   .createProjectProfilePage {
     align-items: stretch;
     padding: 20px;
-  }
-  
-  .outerContainer {
-    margin-bottom: 20px;
   }
 }
 
