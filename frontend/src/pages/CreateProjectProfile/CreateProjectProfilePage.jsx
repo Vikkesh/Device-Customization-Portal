@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import React, { useState ,useEffect } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './CreateProjectProfilePage.module.css';
 
 const CreateProjectProfilePage = () => {
   const { id } = useParams();
   const [project, setProject] = useState(null);
+   const navigate = useNavigate();
+  if (!localStorage.getItem('token')) {
+     navigate('/login');
+  }
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -19,6 +23,7 @@ const CreateProjectProfilePage = () => {
 
     fetchProject();
   }, [id]);
+   
 
   if (!project) {
     return <div>Loading...</div>;
