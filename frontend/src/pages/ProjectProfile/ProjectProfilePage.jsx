@@ -439,7 +439,7 @@ const ProjectProfilePage = () => {
   if (loading) {
     return (
       <div className={styles.loading}>
-        <h2>Loading project data... .</h2>
+        <h2>Loading project data...</h2>
       </div>
     );
   }
