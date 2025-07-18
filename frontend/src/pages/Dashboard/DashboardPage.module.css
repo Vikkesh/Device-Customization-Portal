@@ -13,6 +13,7 @@
     justify-content: center;
     align-items: center;
     margin-top: 2rem;
+    gap: 2rem;
   }
   
   .personalInfoButton {
@@ -27,5 +28,20 @@
   }
   
   .personalInfoButton:hover {
+    background-color: var(--color-red-dark);
+  }
+  
+  .userManagementButton {
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    color: #fff;
+    background-color: var(--color-red);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .userManagementButton:hover {
     background-color: var(--color-red-dark);
   }

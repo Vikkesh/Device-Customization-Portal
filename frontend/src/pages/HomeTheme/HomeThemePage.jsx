@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './HomeThemePage.module.css';
 import FilePreview from '../../components/Preview/FilePreview';
 
 export default function HomeThemePage() {
   const { project_id } = useParams();
+  const navigate = useNavigate();
   const [wallpaperHomescreen, setWallpaperHomescreen] = useState([]);
   const [wallpaperLockscreen, setWallpaperLockscreen] = useState([]);
   const [launcher, setLauncher] = useState('');
@@ -118,7 +119,15 @@ export default function HomeThemePage() {
   return (
     <div className={styles.homeThemePage}>
       <div className={styles.container}>
-        <h2>Home Theme Customization</h2>
+        <div className={styles.header}>
+          <h2>Home Theme Customization</h2>
+          <button 
+            className={styles.backButton}
+            onClick={() => navigate(`/project/${project_id}`)}
+          >
+            Back to customization
+          </button>
+        </div>
         
         <div className={styles.content}>
           <div className={styles.formSection}>

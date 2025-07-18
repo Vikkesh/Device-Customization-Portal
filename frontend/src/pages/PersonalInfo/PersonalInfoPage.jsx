@@ -37,6 +37,10 @@ const PersonalInfoPage = () => {
           <span className={styles.label}>User ID:</span>
           <span className={styles.value}>{userInfo.user_id}</span>
         </div>
+         <div className={styles.infoItem}>
+          <span className={styles.label}>Email:</span>
+          <span className={styles.value}>{userInfo.email}</span>
+        </div>
         <div className={styles.infoItem}>
           <span className={styles.label}>Projects Created:</span>
           <span className={styles.value}>{userInfo.projects_created}</span>

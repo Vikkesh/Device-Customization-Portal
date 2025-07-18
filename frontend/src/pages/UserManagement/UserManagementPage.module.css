@@ -1,0 +1,99 @@
+.userManagementPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.pageContent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Styles for the welcome message and dashboard text */
+.userManagementPage h1 {
+  color: white;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+/* New styles for User Management Section */
+.userManagementSection {
+  width: 90%;
+  max-width: 1200px; /* Max width for the section */
+  margin-top: 30px;
+  padding: 20px;
+  background-color: rgba(51, 51, 51, 0.8); /* Darker background, similar to login form inputs */
+  border-radius: 8px;
+  color: #FFFFFF; /* White text for this section */
+}
+
+.controlsContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.usersTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.usersTable th,
+.usersTable td {
+  border: 1px solid #555555; /* Medium grey border - from LoginPage.module.css input */
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.usersTable th {
+  background-color: #E2231A; /* Lenovo Red for table headers */
+  color: white;
+  font-weight: 600;
+}
+
+.usersTable tbody tr:nth-child(even) {
+  background-color: rgba(68, 68, 68, 0.5); /* Slightly lighter dark for even rows */
+}
+
+.usersTable tbody tr:hover {
+  background-color: rgba(85, 85, 85, 0.7); /* #555 with opacity */
+}
+
+.usersTable td {
+  color: #FFFFFF;
+}
+
+.usersTable input[type="checkbox"] {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .controlsContainer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .userManagementSection {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .usersTable th,
+  .usersTable td {
+    padding: 8px 10px;
+    font-size: 14px; /* Smaller font for table content on mobile */
+  }
+
+  .userManagementPage h1 {
+    font-size: 2rem;
+  }
+}

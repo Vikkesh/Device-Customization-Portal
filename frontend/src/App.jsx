@@ -8,6 +8,7 @@ import CreateProjectProfilePage from './pages/CreateProjectProfile/CreateProject
 import ProjectProfilePage from './pages/ProjectProfile/ProjectProfilePage';
 import DashboardPage from './pages/Dashboard/DashboardPage';
 import PersonalInfoPage from './pages/PersonalInfo/PersonalInfoPage';
+import UserManagementPage from './pages/UserManagement/UserManagementPage';
 import HomeThemePage from './pages/HomeTheme/HomeThemePage';
 import BootShutDownPage from './pages/BootShutDown/BootShutDownPage';
 import AppsPage from './pages/Apps/AppsPage';
@@ -32,6 +33,7 @@ function AppContent() {
           <Route path="/:project_id/projectprofile" element={<ProjectProfilePage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/personalinfo" element={<PersonalInfoPage />} />
+          <Route path="/usermanagement" element={<UserManagementPage />} />
           <Route path="/:project_id/hometheme" element={<HomeThemePage />} />
           <Route path="/:project_id/bootshutdown" element={<BootShutDownPage />} />
           <Route path="/:project_id/apps" element={<AppsPage />} />

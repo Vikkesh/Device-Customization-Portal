@@ -9,12 +9,19 @@ const DashboardPage = () => {
     navigate('/personalinfo');
   };
 
+  const handleUserManagementClick = () => {
+    navigate('/usermanagement');
+  };
+
   return (
     <div className={styles.dashboardPage}>
       <h1>Dashboard</h1>
       <div className={styles.dashboardContainer}>
         <button onClick={handlePersonalInfoClick} className={styles.personalInfoButton}>
           Personal Information
+        </button>
+        <button onClick={handleUserManagementClick} className={styles.userManagementButton}>
+          User Management
         </button>
       </div>
     </div>

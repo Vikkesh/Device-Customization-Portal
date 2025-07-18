@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './BootShutDownPage.module.css';
 import FilePreview from '../../components/Preview/FilePreview';
 
 export default function BootShutDownPage() {
   const { project_id } = useParams();
+  const navigate = useNavigate();
   const [bootAnimation, setBootAnimation] = useState(null);
   const [bootSound, setBootSound] = useState(null);
   const [shutdownAnimation, setShutdownAnimation] = useState(null);
@@ -82,7 +83,15 @@ export default function BootShutDownPage() {
   return (
     <div className={styles.bootShutDownPage}>
       <div className={styles.container}>
-        <h2>Boot & Shutdown Customization</h2>
+        <div className={styles.header}>
+          <h2>Boot & Shutdown Customization</h2>
+          <button 
+            className={styles.backButton}
+            onClick={() => navigate(`/project/${project_id}`)}
+          >
+            Back to customization
+          </button>
+        </div>
         
         <div className={styles.content}>
           <div className={styles.formSection}>

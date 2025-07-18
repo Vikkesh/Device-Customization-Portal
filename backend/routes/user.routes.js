@@ -3,13 +3,24 @@ import db from '../db.js';
 
 const router = express.Router();
 
+// Get all users (excluding password and created_at)
+router.get('/', async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT id, username, email, role FROM user_profile');
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch users' });
+  }
+});
+
 // Get user profile and project stats
 router.get('/:userId/stats', async (req, res) => {
   try {
     const { userId } = req.params;
 
     // Get user info
-    const [userRows] = await db.query('SELECT username, id FROM user_profile WHERE id = ?', [userId]);
+    const [userRows] = await db.query('SELECT username, email, id FROM user_profile WHERE id = ?', [userId]);
     if (userRows.length === 0) {
       return res.status(404).json({ error: 'User not found' });
     }
@@ -30,6 +41,7 @@ router.get('/:userId/stats', async (req, res) => {
     res.json({
       username: user.username,
       user_id: user.id,
+      email: user.email,
       projects_created,
       total_devices: total_devices || 0,
     });
