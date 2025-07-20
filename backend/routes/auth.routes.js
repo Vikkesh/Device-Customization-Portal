@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import db from '../db.js'; 
 
 const router = express.Router();
-const jwtSecret = process.env.JWT_SECRET || 'your-secret-key'; // Use environment variable in production
+const jwtSecret = process.env.JWT_SECRET || 'secreeet-key'; // Use environment variable in production
 
 // Registration route
 router.post('/register', async (req, res) => {
@@ -73,7 +73,7 @@ router.post('/login', async (req, res) => {
     const token = jwt.sign(
         { id: user.id, username: user.username, role: user.role, email: user.email }, 
         jwtSecret, 
-        { expiresIn: '1h' } // Token expires in 1 hour
+        { expiresIn: '10h' } // Token expires in 10 hours
     );
 
     res.json({ 

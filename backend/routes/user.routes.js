@@ -1,10 +1,11 @@
 import express from 'express';
 import db from '../db.js';
+import { authenticateToken, requireAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Get all users (excluding password and created_at)
-router.get('/', async (req, res) => {
+// Get all users (excluding password and created_at) - Admin only
+router.get('/', authenticateToken, requireAdmin, async (req, res) => {
   try {
     const [rows] = await db.query('SELECT id, username, email, role FROM user_profile');
     res.json(rows);
@@ -15,9 +16,15 @@ router.get('/', async (req, res) => {
 });
 
 // Get user profile and project stats
-router.get('/:userId/stats', async (req, res) => {
+router.get('/:userId/stats', authenticateToken, async (req, res) => {
   try {
     const { userId } = req.params;
+    const requestingUser = req.user;
+
+    // Users can only access their own stats unless they're admin
+    if (requestingUser.role !== 'admin' && requestingUser.id != userId) {
+      return res.status(403).json({ error: 'Access denied. You can only view your own information.' });
+    }
 
     // Get user info
     const [userRows] = await db.query('SELECT username, email, id FROM user_profile WHERE id = ?', [userId]);

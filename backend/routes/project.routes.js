@@ -1,12 +1,20 @@
 import express from 'express';
 import db from '../db.js';
+import { authenticateToken, requireAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Get all projects
-router.get('/', async (req, res) => {
+// Get all projects - role-based access
+router.get('/', authenticateToken, async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT * FROM projects');
+    const { role, id } = req.user;
+
+    let rows;
+    if (role === 'admin') {
+      [rows] = await db.query('SELECT * FROM projects');
+    } else {
+      [rows] = await db.query('SELECT * FROM projects WHERE created_by = ?', [id]);
+    }
     res.json(rows);
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch projects' });
@@ -28,7 +36,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Create a new project
-router.post('/', async (req, res) => {
+router.post('/', authenticateToken, async (req, res) => {
   try {
     const {
       customer_name,
@@ -37,8 +45,10 @@ router.post('/', async (req, res) => {
       device_amount,
       project_description,
       project_status = 'Active',
-      created_by,
     } = req.body;
+    
+    // Use authenticated user's ID
+    const created_by = req.user.id;
     
 
     // Get total and active projects count
