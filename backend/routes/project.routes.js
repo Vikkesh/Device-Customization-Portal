@@ -62,7 +62,7 @@ router.post('/', authenticateToken, async (req, res) => {
     );
 
     const num_total_projects = total_projects + 1;
-    const num_active_projects = project_status === 'Active' ? active_projects + 1 : active_projects;
+    const num_active_projects = active_projects + 1;
 
     const sql = `INSERT INTO projects (customer_name, shipping_country, num_active_projects, num_total_projects, device_model, device_amount, created_by, project_status, project_description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     const values = [

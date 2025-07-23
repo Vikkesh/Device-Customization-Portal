@@ -5,7 +5,16 @@ import SearchComponent from '../../components/SearchComponent/SearchComponent';
 import axios from 'axios';
 
 const UserManagementPage = () => {
-  const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState([]);
+  const [redirect, setRedirect] = useState(false);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user?.role !== 'admin') {
+      alert('Access denied. Only admin users can view this page.');
+      setRedirect(true);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -19,7 +28,7 @@ const UserManagementPage = () => {
     fetchUsers();
   }, []);
 
-  if (!localStorage.getItem('token')) {
+  if (!localStorage.getItem('token') || redirect) {
     return <Navigate to="/login" />;
   }
 

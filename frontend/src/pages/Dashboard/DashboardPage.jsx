@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './DashboardPage.module.css';
+import { useEffect } from 'react';
 
 const DashboardPage = () => {
   const navigate = useNavigate();
@@ -13,6 +14,14 @@ const DashboardPage = () => {
     navigate('/usermanagement');
   };
 
+  useEffect(() => {
+    if (!localStorage.getItem('token')) {
+      navigate('/login');
+    }
+  }, [navigate]);
+
+  const user = JSON.parse(localStorage.getItem('user'));
+
   return (
     <div className={styles.dashboardPage}>
       <h1>Dashboard</h1>
@@ -20,9 +29,11 @@ const DashboardPage = () => {
         <button onClick={handlePersonalInfoClick} className={styles.personalInfoButton}>
           Personal Information
         </button>
-        <button onClick={handleUserManagementClick} className={styles.userManagementButton}>
-          User Management
-        </button>
+        {user?.role === 'admin' && (
+          <button onClick={handleUserManagementClick} className={styles.userManagementButton}>
+            User Management
+          </button>
+        )}
       </div>
     </div>
   );

@@ -48,8 +48,8 @@ const HomePage = () => {
               <th>Project ID</th>
               <th>Customer Name</th>
               <th>Shipping Country</th>
-              <th># of active</th>
-              <th># of total</th>
+              <th># of active projects</th>
+              <th># of total projects</th>
               <th>Device Model</th>
               <th>Device Amount</th>
               <th>Created by</th>
