@@ -29,6 +29,8 @@ const UserManagementPage = () => {
   }, []);
 
   if (!localStorage.getItem('token') || redirect) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     return <Navigate to="/login" />;
   }
 
