@@ -22,7 +22,6 @@ CREATE TABLE IF NOT EXISTS projects (
   project_status VARCHAR(50) DEFAULT 'Active',
   project_description TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (created_by) REFERENCES user_profile(id) ON DELETE SET NULL
 );
 
 -- Optional: Add indexes for frequently queried columns

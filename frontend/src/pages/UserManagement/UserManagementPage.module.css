@@ -39,6 +39,48 @@
   margin-bottom: 20px;
 }
 
+.adminButtons {
+  display: flex;
+  gap: 15px;
+}
+
+.adminButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  min-width: 140px;
+}
+
+.deleteButton {
+  background-color: #dc3545;
+  color: white;
+}
+
+.deleteButton:hover:not(:disabled) {
+  background-color: #c82333;
+  transform: translateY(-2px);
+}
+
+.toggleAdminButton {
+  background-color: #E2231A; /* Lenovo Red */
+  color: white;
+}
+
+.toggleAdminButton:hover:not(:disabled) {
+  background-color: #c1201a;
+  transform: translateY(-2px);
+}
+
+.adminButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .usersTable {
   width: 100%;
   border-collapse: collapse;
@@ -73,6 +115,7 @@
 .usersTable input[type="checkbox"] {
   cursor: pointer;
   transform: scale(1.2);
+   margin-left: 8px;
 }
 
 /* Responsive adjustments */
@@ -80,6 +123,19 @@
   .controlsContainer {
     flex-direction: column;
     align-items: stretch;
+    gap: 15px;
+  }
+
+  .adminButtons {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .adminButton {
+    min-width: 120px;
+    padding: 8px 16px;
+    font-size: 13px;
   }
 
   .userManagementSection {

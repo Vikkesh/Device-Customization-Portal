@@ -58,4 +58,78 @@ router.get('/:userId/stats', authenticateToken, async (req, res) => {
   }
 });
 
+// Bulk delete users - Admin only
+router.delete('/bulk-delete', authenticateToken, requireAdmin, async (req, res) => {
+  try {
+    const { userIds } = req.body;
+
+    if (!userIds || !Array.isArray(userIds) || userIds.length === 0) {
+      return res.status(400).json({ error: 'userIds array is required' });
+    }
+
+    // Prevent admin from deleting themselves
+    if (userIds.includes(req.user.id)) {
+      return res.status(400).json({ error: 'You cannot delete your own account' });
+    }
+
+    // Create placeholders for the query
+    const placeholders = userIds.map(() => '?').join(',');
+    
+    // Then delete the users
+    const [result] = await db.query(`DELETE FROM user_profile WHERE id IN (${placeholders})`, userIds);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'No users found to delete' });
+    }
+
+    res.json({ 
+      message: `Successfully deleted ${result.affectedRows} user(s)`,
+      deletedCount: result.affectedRows
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to delete users' });
+  }
+});
+
+// Toggle admin role for multiple users - Admin only
+router.patch('/toggle-admin', authenticateToken, requireAdmin, async (req, res) => {
+  try {
+    const { userIds } = req.body;
+
+    if (!userIds || !Array.isArray(userIds) || userIds.length === 0) {
+      return res.status(400).json({ error: 'userIds array is required' });
+    }
+
+    // Prevent admin from changing their own role
+    if (userIds.includes(req.user.id)) {
+      return res.status(400).json({ error: 'You cannot change your own role' });
+    }
+
+    // Get current roles for these users
+    const placeholders = userIds.map(() => '?').join(',');
+    const [users] = await db.query(`SELECT id, role FROM user_profile WHERE id IN (${placeholders})`, userIds);
+
+    if (users.length === 0) {
+      return res.status(404).json({ error: 'No users found' });
+    }
+
+    // Toggle roles: admin -> client, client -> admin
+    const updatePromises = users.map(user => {
+      const newRole = user.role === 'admin' ? 'client' : 'admin';
+      return db.query('UPDATE user_profile SET role = ? WHERE id = ?', [newRole, user.id]);
+    });
+
+    await Promise.all(updatePromises);
+
+    res.json({ 
+      message: `Successfully updated roles for ${users.length} user(s)`,
+      updatedCount: users.length
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to update user roles' });
+  }
+});
+
 export default router;
