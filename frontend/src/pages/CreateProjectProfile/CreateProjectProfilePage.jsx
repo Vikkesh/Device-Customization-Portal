@@ -23,10 +23,9 @@ const CreateProjectProfilePage = () => {
 
     fetchProject();
   }, [id]);
-   
 
   if (!project) {
-    return <div>Loading...</div>;
+    return <div>Project doesn't exist or You don't have access to that project.</div>;
   }
 
   return (

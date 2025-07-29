@@ -11,10 +11,25 @@ router.get('/', authenticateToken, async (req, res) => {
 
     let rows;
     if (role === 'admin') {
-      [rows] = await db.query('SELECT * FROM projects');
+      [rows] = await db.query(`
+      SELECT 
+        p.*,
+        d.device_id 
+      FROM projects p
+      LEFT JOIN devices d ON p.device_model = d.device_name
+      ORDER BY p.created_at DESC
+    `);
     } else {
-      [rows] = await db.query('SELECT * FROM projects WHERE created_by = ?', [id]);
-    }
+      [rows] = await db.query(`
+      SELECT 
+        p.*,
+        d.device_id 
+      FROM projects p
+      LEFT JOIN devices d ON p.device_model = d.device_name
+      WHERE p.created_by = ?
+      ORDER BY p.created_at DESC
+    `, [id]); 
+   }
     res.json(rows);
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch projects' });
@@ -22,12 +37,16 @@ router.get('/', authenticateToken, async (req, res) => {
 });
 
 // Get a single project by ID
-router.get('/:id', async (req, res) => {
+router.get('/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
+    const {role} = req.user;
     const [rows] = await db.query('SELECT * FROM projects WHERE project_id = ?', [id]);
     if (rows.length === 0) {
       return res.status(404).json({ error: 'Project not found' });
+    }
+    if(role!=='admin' && rows[0].created_by !== req.user.id) {
+      return res.status(403).json({ error: 'Access denied. You can only view your own projects.' });
     }
     res.json(rows[0]);
   } catch (err) {
