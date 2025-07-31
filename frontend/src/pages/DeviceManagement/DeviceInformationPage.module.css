@@ -1,0 +1,187 @@
+.deviceInformationPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--color-bg-dark);
+}
+
+.pageContent {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.deviceInformationPage h1 {
+  color: var(--color-white);
+  margin: 0;
+  font-size: 2.5rem;
+  text-align: left;
+}
+
+.backButton {
+  padding: 10px 20px;
+  background-color: var(--color-purple);
+  color: var(--color-white);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.backButton:hover {
+  background-color: #3a00c7;
+  transform: translateY(-2px);
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: var(--color-white);
+}
+
+.deviceInfoSection {
+  width: 100%;
+  background-color: var(--color-bg-darker-transparent);
+  border-radius: 8px;
+  padding: 30px;
+  color: var(--color-white);
+}
+
+.deviceInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fieldLabel {
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--color-red);
+}
+
+.fieldValue {
+  font-size: 16px;
+  color: var(--color-white);
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border);
+  min-height: 20px;
+}
+
+.editInput, .editTextarea {
+  padding: 12px 15px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background-color: var(--color-bg-darker);
+  color: var(--color-white);
+  font-size: 16px;
+  font-family: inherit;
+  transition: border-color 0.3s ease;
+}
+
+.editInput:focus, .editTextarea:focus {
+  outline: none;
+  border-color: var(--color-red);
+}
+
+.editTextarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  justify-content: flex-start;
+}
+
+.editButton, .saveButton, .cancelButton {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.editButton {
+  background-color: var(--color-red);
+  color: var(--color-white);
+}
+
+.editButton:hover {
+  background-color: var(--color-red-dark);
+  transform: translateY(-2px);
+}
+
+.saveButton {
+  background-color: #28a745;
+  color: var(--color-white);
+}
+
+.saveButton:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+.cancelButton {
+  background-color: #6c757d;
+  color: var(--color-white);
+}
+
+.cancelButton:hover {
+  background-color: #5a6268;
+  transform: translateY(-2px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .deviceInformationPage h1 {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .pageContent {
+    padding: 15px;
+  }
+
+  .deviceInfoSection {
+    padding: 20px;
+  }
+
+  .actionButtons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .editButton, .saveButton, .cancelButton {
+    width: 100%;
+  }
+}

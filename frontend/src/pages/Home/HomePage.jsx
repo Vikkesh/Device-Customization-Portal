@@ -71,7 +71,11 @@ const HomePage = () => {
                   <td>{project.shipping_country}</td>
                   <td>{project.num_active_projects}</td>
                   <td>{project.num_total_projects}</td>
-                  <td>{project.device_model}</td>
+                  <td> {project.device_id ? (
+                        <Link to={`/device-information/${project.device_id}`}>
+                          {project.device_model}
+                        </Link>
+                      ) : (project.device_model)}</td>
                   <td>{project.device_amount}</td>
                   <td>{project.created_by}</td>
                   <td>{project.project_status}</td>

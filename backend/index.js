@@ -7,6 +7,7 @@ dotenv.config();
 import authRoutes from './routes/auth.routes.js';
 import projectRoutes from './routes/project.routes.js';
 import userRoutes from './routes/user.routes.js';
+import deviceRoutes from './routes/device.routes.js';
 import s3Routes from './routes/amazons3.routes.js';
 import projPreviewRoutes from './routes/projpreview.routes.js';
 import projInputRoutes from './routes/projinput.routes.js';
@@ -22,6 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded bodies
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/devices', deviceRoutes);
 app.use('/api/s3', s3Routes);
 app.use('/api/preview', projPreviewRoutes);
 app.use('/api/inputs', projInputRoutes);

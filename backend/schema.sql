@@ -45,6 +45,13 @@ CREATE TABLE IF NOT EXISTS project_inputs (
   FOREIGN KEY (project_id) REFERENCES projects(project_id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS devices (
+  device_id INT AUTO_INCREMENT PRIMARY KEY,
+  device_name VARCHAR(255) NOT NULL UNIQUE,
+  device_type VARCHAR(50) NOT NULL,
+  device_description TEXT
+);
+
 -- Optional: Add indexes for better performance
 -- CREATE INDEX idx_project_preview_project_id ON project_preview(project_id);
 -- CREATE INDEX idx_project_preview_field ON project_preview(field);

@@ -12,6 +12,9 @@ import UserManagementPage from './pages/UserManagement/UserManagementPage';
 import HomeThemePage from './pages/HomeTheme/HomeThemePage';
 import BootShutDownPage from './pages/BootShutDown/BootShutDownPage';
 import AppsPage from './pages/Apps/AppsPage';
+import DeviceManagementPage from './pages/DeviceManagement/DeviceManagmentPage';
+import DeviceInformationPage from './pages/DeviceManagement/DeviceInformation';
+import AddDevicePage from './pages/DeviceManagement/AddDevice';
 import Header from './components/Header/Header';
 import './App.css';
 
@@ -37,6 +40,9 @@ function AppContent() {
           <Route path="/:project_id/hometheme" element={<HomeThemePage />} />
           <Route path="/:project_id/bootshutdown" element={<BootShutDownPage />} />
           <Route path="/:project_id/apps" element={<AppsPage />} />
+          <Route path="/device-management" element={<DeviceManagementPage />} />
+          <Route path="/device-information/:deviceId" element={<DeviceInformationPage />} />
+          <Route path="/add-device" element={<AddDevicePage />} />
           {/* Add other routes here */}
         </Routes>
       </div>

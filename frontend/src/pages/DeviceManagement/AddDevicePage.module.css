@@ -1,0 +1,180 @@
+.addDevicePage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--color-bg-dark);
+}
+
+.pageContent {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.addDevicePage h1 {
+  color: var(--color-white);
+  margin: 0;
+  font-size: 2.5rem;
+  text-align: left;
+}
+
+.backButton {
+  padding: 10px 20px;
+  background-color: var(--color-purple);
+  color: var(--color-white);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.backButton:hover {
+  background-color: #3a00c7;
+  transform: translateY(-2px);
+}
+
+.addDeviceSection {
+  width: 100%;
+  background-color: var(--color-bg-darker-transparent);
+  border-radius: 8px;
+  padding: 30px;
+  color: var(--color-white);
+}
+
+.deviceForm {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fieldLabel {
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--color-red);
+}
+
+.formInput, .formTextarea {
+  padding: 12px 15px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background-color: var(--color-bg-darker);
+  color: var(--color-white);
+  font-size: 16px;
+  font-family: inherit;
+  transition: border-color 0.3s ease;
+}
+
+.formInput:focus, .formTextarea:focus {
+  outline: none;
+  border-color: var(--color-red);
+  box-shadow: 0 0 0 2px rgba(226, 35, 26, 0.2);
+}
+
+.formInput::placeholder, .formTextarea::placeholder {
+  color: #999;
+}
+
+.formTextarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  justify-content: flex-start;
+}
+
+.saveButton, .cancelButton {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  min-width: 120px;
+}
+
+.saveButton {
+  background-color: var(--color-red);
+  color: var(--color-white);
+}
+
+.saveButton:hover:not(:disabled) {
+  background-color: var(--color-red-dark);
+  transform: translateY(-2px);
+}
+
+.saveButton:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.cancelButton {
+  background-color: #6c757d;
+  color: var(--color-white);
+}
+
+.cancelButton:hover:not(:disabled) {
+  background-color: #5a6268;
+  transform: translateY(-2px);
+}
+
+.cancelButton:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .addDevicePage h1 {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .pageContent {
+    padding: 15px;
+  }
+
+  .addDeviceSection {
+    padding: 20px;
+  }
+
+  .actionButtons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .saveButton, .cancelButton {
+    width: 100%;
+  }
+}

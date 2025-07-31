@@ -14,6 +14,10 @@ const DashboardPage = () => {
     navigate('/usermanagement');
   };
 
+  const handleDeviceManagementClick = () => {
+    navigate('/device-management');
+  };
+
   useEffect(() => {
     if (!localStorage.getItem('token')) {
       navigate('/login');
@@ -34,6 +38,9 @@ const DashboardPage = () => {
             User Management
           </button>
         )}
+        <button onClick={handleDeviceManagementClick} className={styles.deviceManagementButton}>
+          {user?.role === 'admin' ? 'Device Management' : 'Devices'}
+        </button>
       </div>
     </div>
   );

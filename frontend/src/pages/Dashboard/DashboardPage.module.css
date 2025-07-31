@@ -45,3 +45,18 @@
   .userManagementButton:hover {
     background-color: var(--color-red-dark);
   }
+  
+  .deviceManagementButton {
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    color: #fff;
+    background-color: var(--color-red);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .deviceManagementButton:hover {
+    background-color: var(--color-red-dark);
+  }

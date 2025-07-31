@@ -1,0 +1,175 @@
+.deviceManagementPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--color-bg-dark);
+}
+
+.pageContent {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.deviceManagementPage h1 {
+  color: var(--color-white);
+  margin: 0;
+  font-size: 2.5rem;
+  text-align: left;
+}
+
+.backButton {
+  padding: 10px 20px;
+  background-color: var(--color-purple);
+  color: var(--color-white);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.backButton:hover {
+  background-color: #3a00c7;
+  transform: translateY(-2px);
+}
+
+.deviceManagementSection {
+  width: 100%;
+  background-color: var(--color-bg-darker-transparent);
+  border-radius: 8px;
+  padding: 20px;
+  color: var(--color-white);
+}
+
+.controlsContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.addDeviceButton {
+  padding: 12px 24px;
+  background-color: var(--color-red);
+  color: var(--color-white);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.addDeviceButton:hover {
+  background-color: var(--color-red-dark);
+  transform: translateY(-2px);
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: var(--color-white);
+}
+
+.noDevices {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: var(--color-grey-medium);
+}
+
+.devicesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+.deviceCard {
+  background-color: var(--color-bg-darker);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.deviceCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(226, 35, 26, 0.2);
+  border-color: var(--color-red);
+}
+
+.deviceName {
+  color: var(--color-white);
+  margin: 0 0 10px 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.deviceType {
+  color: var(--color-red);
+  margin: 0 0 10px 0;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.deviceDescription {
+  color: var(--color-grey-medium);
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .deviceManagementPage h1 {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .pageContent {
+    padding: 15px;
+  }
+
+  .deviceManagementSection {
+    padding: 15px;
+  }
+
+  .devicesGrid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .controlsContainer {
+    justify-content: center;
+  }
+}

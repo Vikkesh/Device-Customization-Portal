@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './CreateProjectPage.module.css';
@@ -6,6 +6,7 @@ import styles from './CreateProjectPage.module.css';
 const CreateProjectPage = () => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user'));
+  const [devices, setDevices] = useState([]);
   const [form, setForm] = useState({
     customerName: '',
     shippingCountry: '',
@@ -14,6 +15,18 @@ const CreateProjectPage = () => {
     deviceModel: '',
     projectDescription: '',
   });
+
+  useEffect(() => {
+    const fetchDevices = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/api/devices');
+        setDevices(response.data);
+      } catch (error) {
+        console.error('Failed to fetch devices:', error);
+      }
+    };
+    fetchDevices();
+  }, []);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -64,9 +77,11 @@ const CreateProjectPage = () => {
         <label>Device Model
           <select name="deviceModel" value={form.deviceModel} onChange={handleChange} required>
             <option value="">Select a model</option>
-            <option value="Model X">Model X</option>
-            <option value="Model Y">Model Y</option>
-            <option value="Model Z">Model Z</option>
+            {devices.map((device) => (
+              <option key={device.device_id} value={device.device_name}>
+                {device.device_name}
+              </option>
+            ))}
           </select>
         </label>
         <label>Description
