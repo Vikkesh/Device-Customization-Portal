@@ -22,11 +22,6 @@ const DeviceManagementPage = () => {
         setDevices(response.data);
       } catch (error) {
         console.error('Failed to fetch devices:', error);
-        if (error.response?.status === 401) {
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
-          setRedirect(true);
-        }
       } finally {
         setLoading(false);
       }
@@ -69,10 +64,11 @@ const DeviceManagementPage = () => {
 
         <div className={styles.deviceManagementSection}>
           <div className={styles.controlsContainer}>
-            {user?.role === 'admin' && (
+            {user?.role === 'admin' && (<>
               <button onClick={handleAddDeviceClick} className={styles.addDeviceButton}>
                 Add Device
               </button>
+            </>
             )}
           </div>
 

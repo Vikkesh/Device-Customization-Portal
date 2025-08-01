@@ -83,6 +83,18 @@ const DeviceInformationPage = () => {
       alert(error.response?.data?.error || 'Failed to update device');
     }
   };
+  const handleDelete = async () => {
+    if (window.confirm('Are you sure you want to delete this device?')) {
+      try {
+        await axios.delete(`http://localhost:8080/api/devices/${deviceId}`);
+        alert('Device deleted successfully!');
+        navigate('/device-management');
+      } catch (error) {
+        console.error('Failed to delete device:', error);
+        alert(error.response?.data?.error || 'Failed to delete device');
+      }
+    }
+  };
 
   if (!localStorage.getItem('token') || redirect) {
     localStorage.removeItem('token');
@@ -181,10 +193,14 @@ const DeviceInformationPage = () => {
                       Cancel
                     </button>
                   </>
-                ) : (
+                ) : (<>
                   <button onClick={handleEdit} className={styles.editButton}>
                     Edit Device
                   </button>
+                   <button onClick={handleDelete} className={styles.editButton}>
+                    Delete Device
+                  </button>
+                  </>
                 )}
               </div>
             )}
