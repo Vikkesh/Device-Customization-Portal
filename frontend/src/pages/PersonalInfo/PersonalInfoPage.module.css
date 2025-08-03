@@ -42,3 +42,63 @@
   .value {
     color: var(--color-white);
   }
+  
+  .inputField {
+    background: var(--color-bg-dark);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    padding: 0.5rem;
+    color: var(--color-white);
+    font-size: 1rem;
+    width: 200px;
+  }
+  
+  .inputField:focus {
+    outline: none;
+    border-color: var(--color-red);
+    box-shadow: 0 0 0 2px rgba(226, 35, 26, 0.2);
+  }
+  
+  .saveButtonContainer {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .saveButton {
+    background: var(--color-red);
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .saveButton:hover {
+    background: var(--color-red-dark);
+    transform:translateY(-2px);
+  }
+  
+  .saveButton:active {
+    transform: translateY(1px);
+  }
+  
+  /* Responsive design */
+  @media (max-width: 600px) {
+    .inputField {
+      width: 150px;
+      font-size: 0.9rem;
+    }
+    
+    .infoItem {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .label {
+      margin-bottom: 0.25rem;
+    }
+  }

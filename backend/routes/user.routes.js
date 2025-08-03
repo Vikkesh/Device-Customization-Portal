@@ -58,6 +58,61 @@ router.get('/:userId/stats', authenticateToken, async (req, res) => {
   }
 });
 
+// Update user profile (username and email)
+router.put('/:userId', authenticateToken, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { username, email } = req.body;
+    const requestingUser = req.user;
+
+    // Users can only update their own profile unless they're admin
+    if (requestingUser.role !== 'admin' && requestingUser.id != userId) {
+      return res.status(403).json({ error: 'Access denied. You can only update your own profile.' });
+    }
+
+    // Validate input
+    if (!username || !email) {
+      return res.status(400).json({ error: 'Username and email are required' });
+    }
+
+    // Check if username already exists 
+    const [existingUsers] = await db.query(
+      'SELECT id FROM user_profile WHERE username = ? AND id != ?',
+      [username, userId]
+    );
+    if (existingUsers.length > 0) {
+      return res.status(400).json({ error: 'Username already exists' });
+    }
+
+    // Check if email already exists 
+    const [existingEmails] = await db.query(
+      'SELECT id FROM user_profile WHERE email = ? AND id != ?',
+      [email, userId]
+    );
+    if (existingEmails.length > 0) {
+      return res.status(400).json({ error: 'Email already exists' });
+    }
+
+    // Update user profile
+    const [result] = await db.query(
+      'UPDATE user_profile SET username = ?, email = ? WHERE id = ?',
+      [username, email, userId]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({ 
+      success: true,
+      message: 'Profile updated successfully'
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to update profile' });
+  }
+});
+
 // Bulk delete users - Admin only
 router.delete('/bulk-delete', authenticateToken, requireAdmin, async (req, res) => {
   try {

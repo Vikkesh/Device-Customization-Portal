@@ -40,6 +40,10 @@ router.post('/', authenticateToken, requireAdmin, async (req, res) => {
     if (!device_name || !device_type) {
       return res.status(400).json({ error: 'Device name and type are required' });
     }
+    const existingDevice = await db.query('SELECT * FROM devices WHERE device_name = ?', [device_name]);
+    if (existingDevice[0].length > 0) {
+      return res.status(409).json({ error: 'Device with this name already exists' });
+    }
 
     const [result] = await db.query(
       'INSERT INTO devices (device_name, device_type, device_description) VALUES (?, ?, ?)',
@@ -71,6 +75,10 @@ router.put('/:deviceId', authenticateToken, requireAdmin, async (req, res) => {
 
     if (!device_name || !device_type) {
       return res.status(400).json({ error: 'Device name and type are required' });
+    }
+    const existingDevice = await db.query('SELECT * FROM devices WHERE device_name = ?', [device_name]);
+    if (existingDevice[0].length > 0) {
+      return res.status(409).json({ error: 'Device with this name already exists' });
     }
 
     const [result] = await db.query(
