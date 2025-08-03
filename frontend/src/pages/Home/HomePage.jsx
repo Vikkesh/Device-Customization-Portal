@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, Navigate, Link } from 'react-router-dom';
 import styles from './HomePage.module.css';
 import SearchComponent from '../../components/SearchComponent/SearchComponent';
@@ -30,6 +30,10 @@ const HomePage = () => {
   }, []);
 
   const isAdmin = user?.role === 'admin';
+
+  const handleSearchResults = useCallback((results) => {
+    setFilteredProjects(results);
+  }, []);
 
   const handleCreateProject = () => {
     navigate('/createproject');
@@ -95,7 +99,9 @@ const HomePage = () => {
   };
   const handleSelectAll = (isChecked) => {
     if (isChecked) {
-      setSelectedProjects(projects.map(project => project.project_id));
+      filteredProjects.length > 0
+        ? setSelectedProjects(filteredProjects.map(project => project.project_id))
+        : setSelectedProjects(projects.map(project => project.project_id));
     } else {
       setSelectedProjects([]);
     }
@@ -107,7 +113,12 @@ const HomePage = () => {
         <p>Welcome, {user?.username || 'User'}! This is your project dashboard.</p>
         <div className={styles.projectManagementSection}>
         <div className={styles.searchContainer}>
-          <SearchComponent />
+          <SearchComponent 
+            onSearchResults={handleSearchResults}
+            data={projects}
+            searchFields={['project_status', 'customer_name', 'shipping_country']}
+            placeholder="Search projects by status, customer, or country..."
+          />
         </div>
         <div className={styles.controlsContainer}>
           <div className={styles.regularButtons}>
@@ -164,7 +175,7 @@ const HomePage = () => {
                 type="checkbox" 
                 className={styles.selectAllCheckbox}
                 onChange={(e) => handleSelectAll(e.target.checked)}
-                checked={selectedProjects.length === projects.length && projects.length > 0}
+                checked={filteredProjects.length > 0 ? filteredProjects.length === selectedProjects.length : selectedProjects.length === projects.length && projects.length > 0}
                 />
                 </span>
               </th>

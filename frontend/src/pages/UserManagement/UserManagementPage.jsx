@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Navigate } from 'react-router-dom';
 import styles from './UserManagementPage.module.css';
 import SearchComponent from '../../components/SearchComponent/SearchComponent';
@@ -31,6 +31,10 @@ const UserManagementPage = () => {
     fetchUsers();
   }, [redirect]);
 
+  const handleSearchResults = useCallback((results) => {
+    setFilteredUsers(results);
+  }, []);
+
   if (!localStorage.getItem('token') || redirect) {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -47,7 +51,9 @@ const UserManagementPage = () => {
 
   const handleSelectAll = (isChecked) => {
     if (isChecked) {
-      setSelectedUsers(users.map(user => user.id));
+      filteredUsers.length > 0
+        ? setSelectedUsers(filteredUsers.map(user => user.id))
+        : setSelectedUsers(users.map(user => user.id));
     } else {
       setSelectedUsers([]);
     }
@@ -103,7 +109,7 @@ const UserManagementPage = () => {
         <div className={styles.userManagementSection}>
           <div className={styles.controlsContainer}>
             <SearchComponent 
-              onSearchResults={setFilteredUsers}
+              onSearchResults={handleSearchResults}
               data={users}
               searchFields={['username', 'email', 'role']}
               placeholder="Search users by username, email, or role..."
@@ -138,7 +144,7 @@ const UserManagementPage = () => {
                     type="checkbox" 
                     className={styles.selectAllCheckbox}
                     onChange={(e) => handleSelectAll(e.target.checked)}
-                    checked={selectedUsers.length === users.length && users.length > 0}
+                    checked={filteredUsers.length>0?filteredUsers.length === selectedUsers.length: selectedUsers.length === users.length && users.length > 0}
                   />
                 </th>
               </tr>
