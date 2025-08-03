@@ -80,7 +80,10 @@
   cursor: not-allowed;
   transform: none;
 }
-
+.tableContainer {
+  width: 100%;
+  overflow-x: auto; /* Allows horizontal scrolling for smaller screens */
+}
 .usersTable {
   width: 100%;
   border-collapse: collapse;

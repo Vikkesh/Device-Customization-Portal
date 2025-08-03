@@ -27,8 +27,9 @@ const UserManagementPage = () => {
         console.error('Failed to fetch users:', error);
       }
     };
+    if(!redirect)
     fetchUsers();
-  }, []);
+  }, [redirect]);
 
   if (!localStorage.getItem('token') || redirect) {
     localStorage.removeItem('token');
@@ -124,6 +125,7 @@ const UserManagementPage = () => {
               </button>
             </div>
           </div>
+        <div className={styles.tableContainer}>
           <table className={styles.usersTable}>
             <thead>
               <tr>
@@ -165,6 +167,7 @@ const UserManagementPage = () => {
               )}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
     </div>

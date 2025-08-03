@@ -8,11 +8,15 @@ const HomePage = () => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user'));
   const [projects, setProjects] = useState([]);
+  const [selectedProjects, setSelectedProjects] = useState([]);
+  const [filteredProjects, setFilteredProjects] = useState([]);
 
-  const handleCreateProject = () => {
-    navigate('/createproject');
-  };
-
+  useEffect(() =>{
+    if (!localStorage.getItem('token')) {
+    return <Navigate to="/login" />;
+  }
+  }, []);
+  
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -25,23 +29,64 @@ const HomePage = () => {
     fetchProjects();
   }, []);
 
-  if (!localStorage.getItem('token')) {
-    return <Navigate to="/login" />;
-  }
+
+    const handleCreateProject = () => {
+    navigate('/createproject');
+  };
+
+
+  const handleProjectSelection = (projectId, isChecked) => {
+    if (isChecked) {
+      setSelectedProjects(prev => [...prev, projectId]);
+    } else {
+      setSelectedProjects(prev => prev.filter(id => id !== projectId));
+    }
+  };
+  const handleSelectAll = (isChecked) => {
+    if (isChecked) {
+      setSelectedProjects(projects.map(project => project.project_id));
+    } else {
+      setSelectedProjects([]);
+    }
+  };
 
   return (
     <div className={styles.homePage}>
       <div className={styles.pageContent}>
-        <p> Welcome, {user?.username || 'User'}! This is your project dashboard.</p>
+        <p>Welcome, {user?.username || 'User'}! This is your project dashboard.</p>
         <div className={styles.projectManagementSection}>
-        <div className={styles.controlsContainer}>
+        <div className={styles.searchContainer}>
           <SearchComponent />
         </div>
-        <div className={styles.createProjectContainer}>
-          <button onClick={handleCreateProject} className={styles.createProjectButton}>
+        <div className={styles.controlsContainer}>
+          <div className={styles.regularButtons}>
+          <button onClick={handleCreateProject} className={`${styles.createProjectButton} ${styles.button}`}>
             Create Project
           </button>
+           <button 
+                   className={`${styles.button} ${styles.deleteButton}`}  
+                   disabled={selectedProjects.length === 0}>
+                        
+                    Delete Project{selectedProjects.length > 1 ? 's' : ''}
+                   </button>
+          </div> 
+          <div className = {styles.adminButtons}>
+            <span>Set status: </span>
+           <button className = {`${styles.button} ${styles.statusButton}`} 
+                disabled={selectedProjects.length === 0}>
+            Active
+            </button>
+            <button className = {`${styles.button} ${styles.statusButton}`} 
+                disabled={selectedProjects.length === 0}>
+            Suspend
+            </button>
+            <button className = {`${styles.button} ${styles.statusButton}`} 
+                disabled={selectedProjects.length === 0}>
+            Completed
+            </button>
+          </div>
         </div>
+      <div className={styles.tableContainer}>
         <table className={styles.projectsTable}>
           <thead>
             <tr>
@@ -55,7 +100,17 @@ const HomePage = () => {
               <th>Created by</th>
               <th>Status</th>
               <th>Description</th>
-              <th>Select</th>
+              <th>
+               <span className={styles.selectHeader}>
+                 Select
+                <input 
+                type="checkbox" 
+                className={styles.selectAllCheckbox}
+                onChange={(e) => handleSelectAll(e.target.checked)}
+                checked={selectedProjects.length === projects.length && projects.length > 0}
+                />
+                </span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -80,12 +135,18 @@ const HomePage = () => {
                   <td>{project.created_by}</td>
                   <td>{project.project_status}</td>
                   <td>{project.project_description}</td>
-                  <td><input type="checkbox" /></td>
+                  <td> <input 
+                        type="checkbox" 
+                        checked={selectedProjects.includes(project.project_id)}
+                        onChange={(e) => handleProjectSelection(project.project_id, e.target.checked)}
+                      />
+                  </td>
                 </tr>
               ))
             )}
           </tbody>
         </table>
+       </div> 
         </div>
       </div>
     </div>

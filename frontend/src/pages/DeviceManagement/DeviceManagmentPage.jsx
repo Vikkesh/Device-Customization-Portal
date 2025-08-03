@@ -7,13 +7,13 @@ const DeviceManagementPage = () => {
   const navigate = useNavigate();
   const [devices, setDevices] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
     if (!localStorage.getItem('token')) {
-      setRedirect(true);
+      navigate('/login');
     }
-  }, []);
+  }, [navigate]);
+  
 
   useEffect(() => {
     const fetchDevices = async () => {
@@ -27,10 +27,8 @@ const DeviceManagementPage = () => {
       }
     };
 
-    if (!redirect) {
       fetchDevices();
-    }
-  }, [redirect]);
+  }, []);
 
   const handleDeviceClick = (deviceId) => {
     navigate(`/device-information/${deviceId}`);
@@ -43,12 +41,6 @@ const DeviceManagementPage = () => {
   const handleBackToDashboard = () => {
     navigate('/dashboard');
   };
-
-  if (!localStorage.getItem('token') || redirect) {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    return <Navigate to="/login" />;
-  }
 
   const user = JSON.parse(localStorage.getItem('user'));
 

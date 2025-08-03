@@ -28,6 +28,9 @@
   border-radius: 8px;
   color: #FFFFFF; /* White text for this section */
 }
+.searchContainer {
+  margin-bottom: 20px;
+}
 
 .controlsContainer {
   display: flex;
@@ -35,24 +38,66 @@
   align-items: center;
   margin-bottom: 20px;
 }
+.regularButtons {
+  display: flex;
+  gap: 15px;
+}
+.button{
+ padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  min-width: 140px;
+}
+.button:disabled{
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+.deleteButton {
+  background-color: #dc3545;
+  color: white;
+}
+.deleteButton:hover:not(:disabled) {
+  background-color: #c82333;
+  transform: translateY(-2px);
+}
 
 .createProjectButton {
   background: #E2231A; /* Lenovo Red - from LoginPage.module.css */
   color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
 }
-
 .createProjectButton:hover {
   background-color: #C0150C; /* Darker Red - from LoginPage.module.css */
   transform: translateY(-2px);
 }
+.adminButtons {
+  display: flex;
+  gap: 15px;
+  border-bottom: 3px dashed #ffffff;
+  padding-bottom:5px;
+}
+.adminButtons span{
+  align-self:center;
+}
+.statusButton {
+  background-color: var(--color-purple);
+  color: white;
+}
+.statusButton:hover:not(:disabled) {
+  background-color:  #2c35e4;
+  transform: translateY(-2px);
+}
 
+.tableContainer {
+  width: 100%;
+  overflow-x: auto;
+  /* Responsive: limit height on mobile if needed */
+  /* max-width: 100%; */
+}
 .projectsTable {
   width: 100%;
   border-collapse: collapse;
@@ -79,17 +124,32 @@
 .projectsTable tbody tr:hover {
   background-color: rgba(85, 85, 85, 0.7); /* #555 with opacity */
 }
-
+.selectHeader {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .controlsContainer {
     flex-direction: column;
     align-items: stretch;
+    gap: 15px;
   }
-
-  .createProjectButton {
-    width: 100%;
-    margin-top: 10px; /* Add space between search and button when stacked */
+.regularButtons, .adminButtons{
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .button{
+    min-width: 120px;
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+  .buttons{
+    min-width: 120px;
+    padding: 8px 16px;
+    font-size: 13px;
   }
 
   .projectManagementSection {
@@ -103,5 +163,6 @@
     font-size: 14px; /* Smaller font for table content on mobile */
   }
 }
+
 
 
