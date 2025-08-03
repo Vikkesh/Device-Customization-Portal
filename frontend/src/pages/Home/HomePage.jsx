@@ -29,11 +29,62 @@ const HomePage = () => {
     fetchProjects();
   }, []);
 
+  const isAdmin = user?.role === 'admin';
 
-    const handleCreateProject = () => {
+  const handleCreateProject = () => {
     navigate('/createproject');
   };
 
+  const handleDeleteProjects = async () => {
+    if (selectedProjects.length === 0) return;
+    
+    if (!window.confirm(`Are you sure you want to delete ${selectedProjects.length} project(s)? This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      await axios.delete('http://localhost:8080/api/projects/bulk-delete', {
+        data: { projectIds: selectedProjects }
+      });
+      
+      // Refresh the projects list
+      const response = await axios.get('http://localhost:8080/api/projects');
+      setProjects(response.data);
+      setSelectedProjects([]);
+      alert('Projects deleted successfully!');
+    } catch (error) {
+      console.error('Failed to delete projects:', error);
+      alert(error.response?.data?.error || 'Failed to delete projects. Please try again.');
+    }
+  };
+
+    const handleChangeStatus = async (newStatus) => {
+    if (selectedProjects.length === 0) return;
+
+    try {
+      const response = await axios.put('http://localhost:8080/api/projects/change-status', {
+        projectIds: selectedProjects,
+        status: newStatus
+      });
+
+      if (response.data.success) {
+        // Update local state
+        setProjects(projects.map(project => 
+          selectedProjects.includes(project.project_id) 
+            ? { ...project, project_status: newStatus }
+            : project
+        ));
+        
+        // Clear selection
+        setSelectedProjects([]);
+        
+        alert(`Successfully changed status to ${newStatus} for ${selectedProjects.length} project(s)`);
+      }
+    } catch (error) {
+      console.error('Error changing status:', error);
+      alert('Failed to change project status. Please try again.');
+    }
+  };
 
   const handleProjectSelection = (projectId, isChecked) => {
     if (isChecked) {
@@ -65,26 +116,32 @@ const HomePage = () => {
           </button>
            <button 
                    className={`${styles.button} ${styles.deleteButton}`}  
+                   onClick={handleDeleteProjects}
                    disabled={selectedProjects.length === 0}>
                         
                     Delete Project{selectedProjects.length > 1 ? 's' : ''}
                    </button>
           </div> 
+           {isAdmin && (
           <div className = {styles.adminButtons}>
             <span>Set status: </span>
            <button className = {`${styles.button} ${styles.statusButton}`} 
+                onClick={() => handleChangeStatus('Active')}
                 disabled={selectedProjects.length === 0}>
             Active
             </button>
             <button className = {`${styles.button} ${styles.statusButton}`} 
+                onClick={() => handleChangeStatus('Suspend')}
                 disabled={selectedProjects.length === 0}>
             Suspend
             </button>
             <button className = {`${styles.button} ${styles.statusButton}`} 
+                onClick={() => handleChangeStatus('Completed')}
                 disabled={selectedProjects.length === 0}>
             Completed
             </button>
           </div>
+          )}
         </div>
       <div className={styles.tableContainer}>
         <table className={styles.projectsTable}>
@@ -114,12 +171,12 @@ const HomePage = () => {
             </tr>
           </thead>
           <tbody>
-            {projects.length === 0 ? (
+            {(filteredProjects.length > 0 ? filteredProjects : projects).length === 0? (
               <tr>
                 <td colSpan="11" style={{ textAlign: 'center', padding: '20px' }}>No projects to display yet.</td>
               </tr>
             ) : (
-              projects.map((project) => (
+              (filteredProjects.length>0?filteredProjects : projects).map((project) => (
                 <tr key={project.project_id}>
                   <td><Link to={`/project/${project.project_id}`}>{project.project_id}</Link></td>
                   <td>{project.customer_name}</td>
