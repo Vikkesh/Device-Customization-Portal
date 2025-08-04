@@ -19,7 +19,7 @@ const PersonalInfoPage = () => {
     }, [navigate]);
 
 const user = JSON.parse(localStorage.getItem('user'));
-const userID = user ? user.id : null;
+const userId = user ? user.id : null;
 
   useEffect(() => {
     const fetchUserInfo = async () => {
