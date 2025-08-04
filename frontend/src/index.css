@@ -32,6 +32,23 @@ html {
   --color-grey-medium: #dddddd;
 }
 
+/* Light theme variables */
+body.light-theme {
+  color: #cb3a3a;
+  background-color: #d7d7d7;
+  
+   --color-purple: #4A00E0;
+  --color-red: #E2231A;
+  --color-red-dark: #C0150C;
+  --color-bg-dark: #a8b2bb;
+  --color-bg-darker: #e9ecef;
+  --color-bg-darker-transparent: rgba(233, 236, 239, 0.8);
+  --color-border: #dee2e6;
+  --color-white: #ffffff;
+  --color-grey-light: #ab8b8b;
+  --color-grey-medium: #f1f3f4;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
