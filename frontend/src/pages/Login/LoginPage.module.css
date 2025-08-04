@@ -1,8 +1,12 @@
 /* filepath: /root/Customization_Services/Device_Customization_Portal/frontend/src/pages/Login/LoginPage.module.css */
 
+h1{
+  color: var(--color-text);
+}
 /* Base styles (Desktop First) */
 .loginPage {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh;

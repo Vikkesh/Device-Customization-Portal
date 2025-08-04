@@ -36,8 +36,13 @@ const Header = () => {
 
   return (
     <nav className={styles.appNav}>
-      <Link to="/" className={styles.navLink}>Home</Link>
-      <div className={styles.navControls}>
+      <div className={styles.headerSection}>
+    <Link to="/" className={styles.navLink}>Home</Link>
+  </div>
+     <div className={styles.headerCenter}>
+    <span className={styles.navTitle}>Device Customization Portal</span>
+  </div>
+      <div className={`${styles.headerSection} ${styles.navControls}`}>
         <button 
           onClick={toggleTheme} 
           className={styles.themeToggle}

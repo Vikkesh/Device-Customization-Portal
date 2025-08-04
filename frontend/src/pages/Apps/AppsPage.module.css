@@ -85,7 +85,7 @@
 }
 
 .inputGroup label {
-  color: var(--color-grey-light);
+  color: var(--color-always-white);
   font-weight: 500;
   font-size: 0.95rem;
 }
@@ -153,7 +153,7 @@
   padding: 40px;
   border-radius: 8px;
   text-align: center;
-  color: var(--color-grey-medium);
+  color: var(--color-always-white);
   border: 2px dashed var(--color-border);
 }
 

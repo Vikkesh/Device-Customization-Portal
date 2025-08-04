@@ -109,7 +109,66 @@ router.post('/', authenticateToken, async (req, res) => {
     res.status(500).json({ error: 'Failed to create project' });
   }
 });
+// Change status of multiple projects (Admin only)
+router.put('/change-status', authenticateToken, requireAdmin, async (req, res) => {
+  try {
+    const { projectIds, status } = req.body;
 
+    if (!projectIds || !Array.isArray(projectIds) || projectIds.length === 0) {
+      return res.status(400).json({ error: 'Project IDs array is required' });
+    }
+
+    if (!status) {
+      return res.status(400).json({ error: 'Status is required' });
+    }
+
+    // Validate status value
+    const validStatuses = ['Active', 'Suspend', 'Completed'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ error: 'Invalid status. Must be one of: Active, Suspend, Completed' });
+    }
+
+    const [result] = await db.query(
+      'UPDATE projects SET project_status = ? WHERE project_id IN (?)',
+      [status, projectIds]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'No projects found to update' });
+    }
+
+    // Update active project counts for affected customers
+    if (status === 'Active' || status === 'Suspend' || status === 'Completed') {
+      // Get all customers affected by this status change
+      const [affectedProjects] = await db.query(
+        'SELECT DISTINCT customer_name FROM projects WHERE project_id IN (?)',
+        [projectIds]
+      );
+
+      // Update counts for each affected customer
+      for (const project of affectedProjects) {
+        const [[{ active_count }]] = await db.query(
+          "SELECT COUNT(*) as active_count FROM projects WHERE customer_name = ? AND project_status = 'Active'",
+          [project.customer_name]
+        );
+        
+        await db.query(
+          'UPDATE projects SET num_active_projects = ? WHERE customer_name = ?',
+          [active_count, project.customer_name]
+        );
+      }
+    }
+
+    res.json({ 
+      success: true, 
+      message: `Successfully changed status to ${status} for ${result.affectedRows} project(s)`,
+      updatedCount: result.affectedRows
+    });
+  } catch (err) {
+    console.error('Error changing project status:', err);
+    res.status(500).json({ error: 'Failed to change project status' });
+  }
+});
 // Update a project
 router.put('/:id', authenticateToken, async (req, res) => {
   try {
@@ -187,65 +246,6 @@ router.delete('/bulk-delete', authenticateToken, async (req, res) => {
   }
 });
 
-// Change status of multiple projects (Admin only)
-router.put('/change-status', authenticateToken, requireAdmin, async (req, res) => {
-  try {
-    const { projectIds, status } = req.body;
 
-    if (!projectIds || !Array.isArray(projectIds) || projectIds.length === 0) {
-      return res.status(400).json({ error: 'Project IDs array is required' });
-    }
-
-    if (!status) {
-      return res.status(400).json({ error: 'Status is required' });
-    }
-
-    // Validate status value
-    const validStatuses = ['Active', 'Suspend', 'Completed'];
-    if (!validStatuses.includes(status)) {
-      return res.status(400).json({ error: 'Invalid status. Must be one of: Active, Suspend, Completed' });
-    }
-
-    const [result] = await db.query(
-      'UPDATE projects SET project_status = ? WHERE project_id IN (?)',
-      [status, projectIds]
-    );
-
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ error: 'No projects found to update' });
-    }
-
-    // Update active project counts for affected customers
-    if (status === 'Active' || status === 'Suspend' || status === 'Completed') {
-      // Get all customers affected by this status change
-      const [affectedProjects] = await db.query(
-        'SELECT DISTINCT customer_name FROM projects WHERE project_id IN (?)',
-        [projectIds]
-      );
-
-      // Update counts for each affected customer
-      for (const project of affectedProjects) {
-        const [[{ active_count }]] = await db.query(
-          "SELECT COUNT(*) as active_count FROM projects WHERE customer_name = ? AND project_status = 'Active'",
-          [project.customer_name]
-        );
-        
-        await db.query(
-          'UPDATE projects SET num_active_projects = ? WHERE customer_name = ?',
-          [active_count, project.customer_name]
-        );
-      }
-    }
-
-    res.json({ 
-      success: true, 
-      message: `Successfully changed status to ${status} for ${result.affectedRows} project(s)`,
-      updatedCount: result.affectedRows
-    });
-  } catch (err) {
-    console.error('Error changing project status:', err);
-    res.status(500).json({ error: 'Failed to change project status' });
-  }
-});
 
 export default router;

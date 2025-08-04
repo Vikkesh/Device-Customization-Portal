@@ -30,6 +30,7 @@ function LoginPage() {
 
   return (
     <div className={styles.loginPage}>
+      <h1>Device Customization Portal</h1>
       <div className={styles.loginFormContainer}>
         <h2>Login</h2>
         <form onSubmit={handleLogin} className={styles.loginForm}>

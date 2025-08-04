@@ -14,8 +14,10 @@
 
 /* Styles for the welcome message and dashboard text */
 .homePage p {
-  color: white;
+  color: var(--color-text);
   margin-top: 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
 /* New styles for Project Management Section */

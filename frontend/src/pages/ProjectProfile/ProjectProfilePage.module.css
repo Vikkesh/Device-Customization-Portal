@@ -86,7 +86,7 @@
   padding: 1rem;
   border-radius: 8px;
   border: 1px solid var(--color-border);
-  color: rgba(255, 255, 255, 0.87);
+  color: var(--color-text);
 }
 
 .infoItem strong {
@@ -114,7 +114,7 @@
 
 .noFiles {
   text-align: center;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--color-text);
   font-style: italic;
   padding: 2rem;
   background: var(--color-bg-dark);
@@ -258,7 +258,7 @@ position: relative;
 }
 
 .dangerZone p {
-  color: rgba(255, 255, 255, 0.87);
+  color: var(--color-text);
   margin-bottom: 1.5rem;
 }
 
