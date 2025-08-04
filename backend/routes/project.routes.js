@@ -110,6 +110,43 @@ router.post('/', authenticateToken, async (req, res) => {
   }
 });
 
+// Update a project
+router.put('/:id', authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { role } = req.user;
+    const { customer_name, device_amount, project_description, device_model } = req.body;
+
+    // Check if project exists and user has access
+    const [existingProject] = await db.query('SELECT * FROM projects WHERE project_id = ?', [id]);
+    if (existingProject.length === 0) {
+      return res.status(404).json({ error: 'Project not found' });
+    }
+
+    if (role !== 'admin' && existingProject[0].created_by !== req.user.id) {
+      return res.status(403).json({ error: 'Access denied. You can only update your own projects.' });
+    }
+
+    // Update the project
+    const [result] = await db.query(
+      'UPDATE projects SET customer_name = ?, device_amount = ?, project_description = ?, device_model = ? WHERE project_id = ?',
+      [customer_name, device_amount, project_description, device_model, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Project not found' });
+    }
+
+    res.json({ 
+      success: true,
+      message: 'Project updated successfully'
+    });
+  } catch (err) {
+    console.error('Error updating project:', err);
+    res.status(500).json({ error: 'Failed to update project' });
+  }
+});
+
 // Bulk delete projects
 router.delete('/bulk-delete', authenticateToken, async (req, res) => {
   try {
